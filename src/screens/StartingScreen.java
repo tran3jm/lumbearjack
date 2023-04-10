@@ -16,6 +16,10 @@ public class StartingScreen extends JPanel implements ActionListener
 {
   
   private static final long serialVersionUID = 1L;
+  private static String START = "Start";
+  private static String LORE = "Lore";
+  private static String EXIT = "Exit";
+
   /**
    * Attributes:
    *  -start button
@@ -48,15 +52,16 @@ public class StartingScreen extends JPanel implements ActionListener
      *  -add buttons
      */
     
-    
    	JButton startButton = new JButton(START);
    	startButton.addActionListener(this);
    	JButton loreButton = new JButton(LORE);
    	loreButton.addActionListener(this);
    	JButton exitButton = new JButton(EXIT);
    	exitButton.addActionListener(this);
-
-    // TODO Auto-generated method stub
+   	this.add(startButton);
+   	this.add(loreButton);
+   	this.add(exitButton);
+   	// TODO Auto-generated method stub
     
   }
 

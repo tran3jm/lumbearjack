@@ -1,6 +1,7 @@
 package lumbearjack;
 
-import java.io.IOException;
+
+import javax.swing.JFrame;
 
 import app.JApplication;
 import screens.StartingScreen;
@@ -8,11 +9,12 @@ import screens.StartingScreen;
 public class LumbearjackGame extends JApplication
 {
   StartingScreen startScreen;
-  
+  private boolean starting;
   
   public LumbearjackGame(int width, int height)
   {
     super(width, height);
+    this.starting = true;
     this.startScreen = new StartingScreen(width, height);
     // TODO Auto-generated constructor stub
   }
@@ -21,7 +23,11 @@ public class LumbearjackGame extends JApplication
   public void init()
   {
     // TODO Auto-generated method stub
-    (JPanel)this.getContentPane().add(this.startScreen);
+    JFrame screens = new JFrame();
+    if (this.starting)
+    {
+      screens.add(this.startScreen);
+    }
   }
   
     /**
@@ -32,7 +38,7 @@ public class LumbearjackGame extends JApplication
    */
   public static void main(final String[] args)
   {
-    JApplication app = new LumbearJackGame(600, 800);
+    JApplication app = new LumbearjackGame(800, 600);
     invokeInEventDispatchThread(app);
   }
 }
