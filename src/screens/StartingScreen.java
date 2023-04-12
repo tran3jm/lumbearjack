@@ -1,85 +1,58 @@
 package screens;
 
-import java.awt.Container;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
-
-import app.JApplication;
 import io.ResourceFinder;
-import resources.Marker;
+import visual.statik.sampled.BufferedImageOpFactory;
+import visual.statik.sampled.Content;
+import visual.statik.sampled.ContentFactory;
+import visual.statik.sampled.ImageFactory;
 
-public class StartingScreen extends JPanel implements ActionListener
+/**
+ * 
+ * @author joselynetran
+ *
+ */
+public class StartingScreen extends MainScreen
 {
-  
-  private static final long serialVersionUID = 1L;
-  private static String START = "Start";
-  private static String LORE = "Lore";
-  private static String EXIT = "Exit";
 
   /**
-   * Attributes:
-   *  -start button
-   *  -resource finder
-   *  -background image
-   *  -danny logo
+   * 
+   * @param width
+   * @param height
+   * @param rf
    */
-  
-
-  private ResourceFinder rf;
-  
-
-  public StartingScreen(int width, int height)
+  public StartingScreen(final int width, final int height, final ResourceFinder rf)
   {
-    super();
-    this.setSize(600, 800);
-    this.rf = ResourceFinder.createInstance(new Marker());
-    
+    super(width, height, rf);
+    this.addDanny();
   }
 
-  public void init()
+  /**
+   * 
+   */
+  public void addDanny()
   {
-    
-    /**
-     * Steps:
-     *  -Set up buttons (Start, lore, exit)
-     *  -Get background forest.jpeg (background) and Starting_Screen_Danny.png
-     *  -Blur forest.jpeg
-     *  -add background and then starting screen
-     *  -add buttons
-     */
-    
-   	JButton startButton = new JButton(START);
-   	startButton.addActionListener(this);
-   	JButton loreButton = new JButton(LORE);
-   	loreButton.addActionListener(this);
-   	JButton exitButton = new JButton(EXIT);
-   	exitButton.addActionListener(this);
-   	this.add(startButton);
-   	this.add(loreButton);
-   	this.add(exitButton);
-   	// TODO Auto-generated method stub
-    
-  }
 
-  @Override
-  public void actionPerformed(ActionEvent evt)
-  {
-    /**
-     * Steps:
-     * 
-     */
-    String buttonName = evt.getActionCommand();
-    /**
-     * Start -> Send signal to LumbearjackGame class to change screens
-     * Lore -> Popup Jframe with Lore
-     * Exit -> Send signal to LumbearjackGame class to exit
-     */
-    
-    
+    // initializing factories
+    ImageFactory imageFactory = new ImageFactory(this.rf);
+    ContentFactory contentFactory = new ContentFactory(this.rf);
+    BufferedImageOpFactory bfFactory = BufferedImageOpFactory.createFactory();
+    BufferedImageOp scaleOp = bfFactory.createScaleOp(0.30, 0.30);
+
+    // initializes images
+    BufferedImage danny = imageFactory.createBufferedImage("Starting_Screen_Danny.png",
+        BufferedImage.TYPE_INT_ARGB);
+    BufferedImage after = new BufferedImage(danny.getWidth(), danny.getHeight(),
+        BufferedImage.TYPE_INT_ARGB);
+
+    // creating danny the bear as content
+    scaleOp.filter(danny, after);
+    Content dannyContent = contentFactory.createContent(after);
+    dannyContent.setLocation(this.view.getWidth() / 10, this.view.getHeight() / 50);
+    this.add(dannyContent);
+
   }
 
 }
