@@ -1,4 +1,4 @@
-package gui;
+package utils;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
@@ -16,14 +16,19 @@ import visual.statik.sampled.ImageFactory;
  */
 public class ScaledImage
 {
-
   /**
+   * Helper static method to scale any image passed and return as Content.
    * 
    * @param filename
+   *          Filename of image file
    * @param rf
+   *          ResourceFinder to get image
+   * @param scaled
+   *          Amount to scale image down or up by
    * @return Scaled down version of the danny pngs
    */
-  public static Content scaledImage(final String filename, final ResourceFinder rf, double scaled)
+  public static Content scaledImage(final String filename, final ResourceFinder rf,
+      final double scaled)
   {
     // initializing factories
     ImageFactory imageFactory = new ImageFactory(rf);
@@ -40,4 +45,5 @@ public class ScaledImage
     scaleOp.filter(danny, after);
     return contentFactory.createContent(after);
   }
+
 }

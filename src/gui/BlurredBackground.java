@@ -11,6 +11,8 @@ import visual.statik.sampled.ContentFactory;
 import visual.statik.sampled.ImageFactory;
 
 /**
+ * GUI class to return background blurred.
+ * NOTE: Still trying to find a more efficient way to do this.
  * 
  * @author joselynetran
  *
@@ -18,6 +20,7 @@ import visual.statik.sampled.ImageFactory;
 public class BlurredBackground
 {
   /**
+   * Returns background blurred.
    * 
    * @return blurredbackground as content
    */
@@ -28,13 +31,13 @@ public class BlurredBackground
     ImageFactory imageFactory = new ImageFactory(rf);
     ContentFactory contentFactory = new ContentFactory(rf);
     BufferedImageOpFactory bfFactory = BufferedImageOpFactory.createFactory();
-    BufferedImageOp blurOp = bfFactory.createBlurOp(25);
+    BufferedImageOp blurOp = bfFactory.createBlurOp(15);
 
     // initializes images
     BufferedImage backgroundPicture = imageFactory.createBufferedImage("forest.jpeg");
   
     // creating backgroundphoto as content
-//    return contentFactory.createContent(blurOp.filter(backgroundPicture, null));
-    return contentFactory.createContent(backgroundPicture);
+    return contentFactory.createContent(blurOp.filter(backgroundPicture, null));
+//    return contentFactory.createContent(backgroundPicture);
   }
 }

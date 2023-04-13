@@ -2,12 +2,12 @@ package game_components;
 
 import java.util.HashMap;
 
-import gui.ScaledImage;
 import io.ResourceFinder;
-import visual.VisualizationView;
+import utils.ScaledImage;
 import visual.statik.sampled.Content;
 
 /**
+ * Bear image frames.
  * 
  * @author joselynetran
  *
@@ -15,16 +15,20 @@ import visual.statik.sampled.Content;
 public class BearFrames implements Frames
 {
 
+  // Bear frames keys
   public static final String SWING = "DANNY-SWING";
   public static final String CHOP = "DANNY-CHOP";
   public static final String MISS = "DANNY-MISS";
-  
-  private int screenHeight;
 
-  private HashMap<String, Content> bearFrames = new HashMap<>();
+  private int screenHeight;
   private ResourceFinder rf;
+  
+  // will map bear frame to name --> <"name", bearimage>
+  private HashMap<String, Content> bearFrames = new HashMap<>();
+  
 
   /**
+   * Constructor.
    * 
    * @param rf
    * @param screenHeight
@@ -40,18 +44,22 @@ public class BearFrames implements Frames
   }
 
   /**
-   * 
+   * Sets location of all frames.
    */
   public void setLocation()
   {
     for (String key : bearFrames.keySet())
     {
-      if (key == CHOP) bearFrames.get(key).setLocation(40, screenHeight / 10);
-      else bearFrames.get(key).setLocation(-10, screenHeight / 10);
+      // if chop bear, must move slightly to right due to width
+      if (key == CHOP)
+        bearFrames.get(key).setLocation(40, screenHeight / 10);
+      else
+        bearFrames.get(key).setLocation(-10, screenHeight / 10);
     }
   }
 
   /**
+   * Adds frames to hashmap.
    * 
    * @param key
    * @param filename
@@ -63,6 +71,7 @@ public class BearFrames implements Frames
   }
 
   /**
+   * Returns tree hashmap to use for GameScreen.
    * 
    * @return Hashmap of the frames
    */

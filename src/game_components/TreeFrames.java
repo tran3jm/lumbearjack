@@ -2,11 +2,12 @@ package game_components;
 
 import java.util.HashMap;
 
-import gui.ScaledImage;
 import io.ResourceFinder;
+import utils.ScaledImage;
 import visual.statik.sampled.Content;
 
 /**
+ * Tree image frames.
  * 
  * @author joselynetran
  *
@@ -14,15 +15,17 @@ import visual.statik.sampled.Content;
 public class TreeFrames implements Frames
 {
 
+  // tree image keys
   public static final String FH_TREE = "FULL-HEALTH TREE";
   public static final String PH_TREE = "PARTIAL-HEALTH TREE";
   public static final String CUT_TREE = "CUT TREE";
-  
 
+  // same format as bear frames --> <"name", tree image>
   private HashMap<String, Content> treeFrames = new HashMap<>();
   private ResourceFinder rf;
 
   /**
+   * Constructor.
    * 
    * @param rf
    * @param screenHeight
@@ -37,7 +40,7 @@ public class TreeFrames implements Frames
   }
 
   /**
-   * 
+   * Sets location for all tree images.
    */
   public void setLocation()
   {
@@ -48,6 +51,7 @@ public class TreeFrames implements Frames
   }
 
   /**
+   * Adds tree images to hashmap.
    * 
    * @param key
    * @param filename
@@ -59,6 +63,7 @@ public class TreeFrames implements Frames
   }
 
   /**
+   * Returns tree hashmap to use for GameScreen.
    * 
    * @return Hashmap of the frames
    */

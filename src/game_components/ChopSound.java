@@ -1,14 +1,12 @@
 package game_components;
 
-import visual.statik.described.AggregateContent;
-
 /**
- * Animated moving hitbar to make the user time their hits when chopping.
+ * Sound class for everytime danny chops.
  * 
  * @author joselynetran
  *
  */
-public class HitBar extends AggregateContent implements GameObserver
+public class ChopSound implements GameObserver
 {
 
   @Override

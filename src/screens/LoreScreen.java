@@ -3,24 +3,16 @@ package screens;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.awt.geom.RoundRectangle2D;
 
-import gui.ScaledImage;
 import gui.TextGraphic;
 import io.FileIntoText;
 import io.ResourceFinder;
-import visual.statik.sampled.BufferedImageOpFactory;
+import utils.ScaledImage;
 import visual.statik.sampled.Content;
-import visual.statik.sampled.ContentFactory;
-import visual.statik.sampled.ImageFactory;
 
 /**
+ * Screen that contains the lore of Danny.
  * 
  * @author joselynetran
  *
@@ -32,6 +24,7 @@ public class LoreScreen extends MainScreen
   private Font font;
 
   /**
+   * Constructor of LoreScreen.
    * 
    * @param width
    * @param height
@@ -50,7 +43,7 @@ public class LoreScreen extends MainScreen
   }
 
   /**
-   * 
+   * Setting up Danny Icon next to Lore box.
    */
   private void dannyIcon()
   {
@@ -62,17 +55,19 @@ public class LoreScreen extends MainScreen
   }
 
   /**
-   * 
+   * Setting up lorebox that will have text contained in it.
    */
   private void setuploreBox()
   {
     visual.statik.described.Content loreTextBox = new visual.statik.described.Content(
-        new Rectangle(500, 350), new Color(67, 41, 18), new Color(218, 168, 114),
-        new BasicStroke(10f));
-    loreTextBox.setLocation(240, 60);
+        new RoundRectangle2D.Double(240, 60, 500, 350, 15, 15), new Color(67, 41, 18),
+        new Color(218, 168, 114), new BasicStroke(10f));
     this.add(loreTextBox);
   }
 
+  /**
+   * Setting up lore text to put into box.
+   */
   private void readLoreText()
   {
     this.loreText = FileIntoText.fileIntoText("lore.txt", rf);

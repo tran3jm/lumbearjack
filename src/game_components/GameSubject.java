@@ -20,8 +20,6 @@ public interface GameSubject
   /**
    * Notifies observe when datum is read.
    * 
-   * @param datum
-   *          Datum to nofify observer of
    */
   public void notifyObservers();
 

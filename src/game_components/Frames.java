@@ -5,6 +5,7 @@ import java.util.HashMap;
 import visual.statik.sampled.Content;
 
 /**
+ * Frame interface for collection of images needed for GameScreen.
  * 
  * @author joselynetran
  *
@@ -12,21 +13,21 @@ import visual.statik.sampled.Content;
 public interface Frames
 {
   /**
-   * Adds observer.
+   * Sets locations of frames.
    * 
    */
   public void setLocation();
-  
+
   /**
-   * Notifies observe when datum is read.
+   * Adds frames to collection.
    * 
    * @param key
    * @param filename
    */
   public void addFrames(final String key, final String filename);
-  
+
   /**
-   * Removes observer.
+   * Returns frames.
    * 
    * @return frames
    */
