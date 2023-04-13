@@ -1,5 +1,5 @@
 
-package GameComponents;
+package game_components;
 
 /**
  * WeatherSubject interface.

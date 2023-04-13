@@ -8,10 +8,12 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import app.JApplication;
 import gui.BlurredBackground;
+import io.FileIntoText;
 import io.ResourceFinder;
 import resources.Marker;
 import screens.*;
@@ -29,6 +31,7 @@ public class LumbearjackGame extends JApplication implements ActionListener
   private static final String CHOP = "LET'S CHOP";
   private static final String EXIT = "EXIT";
   private static final String START = "START";
+  private static final String HELP = "?";
 
   private StartingScreen startScreen;
   private LoreScreen loreScreen;
@@ -38,6 +41,7 @@ public class LumbearjackGame extends JApplication implements ActionListener
   private JButton startButton;
   private JButton exitButton;
   private JButton continueButton;
+  private JButton helpButton;
 
   private ResourceFinder rf;
 
@@ -67,9 +71,7 @@ public class LumbearjackGame extends JApplication implements ActionListener
    */
   public void init()
   {
-    
-    
-    
+
     int buttonX = this.width / 4 + 70;
     int buttonY = this.height / 2 + 130;
 
@@ -119,7 +121,14 @@ public class LumbearjackGame extends JApplication implements ActionListener
 
       case (CHOP):
         wipeContentPane(cp);
+        cp.add(helpButton);
         cp.add(this.gameScreen.getView());
+
+        break;
+        
+      case (HELP):
+        JOptionPane.showMessageDialog(getContentPane(),
+            FileIntoText.fileIntoText("instructions.txt", this.rf));
         break;
 
       default:
@@ -140,19 +149,28 @@ public class LumbearjackGame extends JApplication implements ActionListener
     this.startButton = new JButton(START);
     this.exitButton = new JButton(EXIT);
     this.continueButton = new JButton(CHOP);
+    this.helpButton = new JButton(HELP);
 
-    this.startButton.setFont(this.font);
-    this.exitButton.setFont(this.font);
-    this.continueButton.setFont(this.font);
+    this.buttonSetter(startButton);
+    this.buttonSetter(exitButton);
+    this.buttonSetter(continueButton);
+    this.buttonSetter(helpButton);
 
-    this.startButton.addActionListener(this);
-    this.exitButton.addActionListener(this);
-    this.continueButton.addActionListener(this);
-    
     startButton.setBounds(buttonX, buttonY, 250, 55);
     exitButton.setBounds(buttonX, buttonY + 60, 250, 55);
-    
+
     continueButton.setBounds(this.width / 2 + 100, this.height - 150, 250, 55);
+    helpButton.setBounds(20, 20, 55, 55);
+  }
+
+  /**
+   * 
+   * @param button
+   */
+  private void buttonSetter(final JButton button)
+  {
+    button.setFont(font);
+    button.addActionListener(this);
   }
 
   /**

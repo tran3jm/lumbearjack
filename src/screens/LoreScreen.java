@@ -11,7 +11,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import gui.ScaledImage;
 import gui.TextGraphic;
+import io.FileIntoText;
 import io.ResourceFinder;
 import visual.statik.sampled.BufferedImageOpFactory;
 import visual.statik.sampled.Content;
@@ -53,21 +55,7 @@ public class LoreScreen extends MainScreen
   private void dannyIcon()
   {
 
-    // initializing factories
-    ImageFactory imageFactory = new ImageFactory(this.rf);
-    ContentFactory contentFactory = new ContentFactory(this.rf);
-    BufferedImageOpFactory bfFactory = BufferedImageOpFactory.createFactory();
-    BufferedImageOp scaleOp = bfFactory.createScaleOp(0.43, 0.43);
-
-    // initializes images
-    BufferedImage danny = imageFactory.createBufferedImage("danny.png",
-        BufferedImage.TYPE_INT_ARGB);
-    BufferedImage after = new BufferedImage(danny.getWidth(), danny.getHeight(),
-        BufferedImage.TYPE_INT_ARGB);
-
-    // creating danny the bear as content
-    scaleOp.filter(danny, after);
-    Content dannyContent = contentFactory.createContent(after);
+    Content dannyContent = ScaledImage.scaledImage("danny.png", this.rf, 0.43);
     dannyContent.setLocation(-45, this.view.getHeight() / 5);
     this.add(dannyContent);
 
@@ -87,23 +75,7 @@ public class LoreScreen extends MainScreen
 
   private void readLoreText()
   {
-    InputStream is = this.rf.findInputStream("lore.txt");
-    BufferedReader in = new BufferedReader(new InputStreamReader(is));
-
-    String line;
-    this.loreText = "";
-    try
-    {
-      while ((line = in.readLine()) != null)
-      {
-        this.loreText += line + "\n";
-      }
-    }
-    catch (IOException ioe)
-    {
-      this.loreText = "Danny lore";
-    }
-
+    this.loreText = FileIntoText.fileIntoText("lore.txt", rf);
     TextGraphic tg = new TextGraphic(12, this.loreText, 860, 220, this.font);
     this.add(tg);
   }
