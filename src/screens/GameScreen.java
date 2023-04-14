@@ -1,25 +1,24 @@
 package screens;
 
+import game_components.BearFrames;
+import game_components.TreeFrames;
+import game_components.TreeLife;
+import io.GameComponentObserver;
+import io.ResourceFinder;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashMap;
-
-import game_components.*;
-import io.GameComponentObserver;
-import io.ResourceFinder;
 import visual.statik.sampled.Content;
 
 /**
  * GameScreen that contains the actually game play of LumBearJack.
- * 
+
  * @author joselynetran
  *
  */
-public class GameScreen extends MainScreen implements KeyListener
+public class GameScreen extends MainScreen implements KeyListener 
 {
-
   public static final int SPACEKEY = 32;
-
   private GameComponentObserver gco;
   private HashMap<String, Content> bearFrames;
   private HashMap<String, Content> treeFrames;
@@ -27,7 +26,7 @@ public class GameScreen extends MainScreen implements KeyListener
   private boolean winner;
 
   /**
-   * 
+   * Creates our gameplay screen for users to play.
    * @param width
    * @param height
    * @param rf
@@ -57,8 +56,23 @@ public class GameScreen extends MainScreen implements KeyListener
     int key = e.getKeyCode();
     if (key == SPACEKEY && !this.treelife.hasWon())
     {
-      gco.notifyObservers();
+      // must remove current frame to replace with next frame
+      this.remove(bearFrames.get(BearFrames.SWING));
+      this.add(bearFrames.get(BearFrames.CHOP)); 
+    }
+  }
 
+  @Override
+  public void keyReleased(final KeyEvent e)
+  {
+    // keycode -> keys mapped to specific numbers
+    int key = e.getKeyCode();
+
+    if (key == SPACEKEY && !this.treelife.hasWon())
+    {
+      gco.notifyObservers();
+      
+      
       // change tree frame if half damage
       if (this.treelife.halfDamage())
       {
@@ -72,31 +86,13 @@ public class GameScreen extends MainScreen implements KeyListener
         this.remove(treeFrames.get(TreeFrames.PH_TREE));
         this.add(treeFrames.get(TreeFrames.CUT_TREE));
       }
-
-      // must remove current frame to replace with next frame
-      this.remove(bearFrames.get(BearFrames.SWING));
-      this.add(bearFrames.get(BearFrames.CHOP));
-
-      // extra click to go to winner screen
+     
+      this.remove(bearFrames.get(BearFrames.CHOP));
+      this.add(bearFrames.get(BearFrames.SWING));
     }
     else if (key == SPACEKEY && this.treelife.hasWon())
     {    
       this.winner = true;
-    }
-  }
-
-  @Override
-  public void keyReleased(final KeyEvent e)
-  {
-    // keycode -> keys mapped to specific numbers
-    int key = e.getKeyCode();
-
-    // probably need to move key pressed code into here to deal with
-    // holding spacebar issue.
-    if (key == SPACEKEY && !gameComplete())
-    {
-      this.remove(bearFrames.get(BearFrames.CHOP));
-      this.add(bearFrames.get(BearFrames.SWING));
     }
   }
 
