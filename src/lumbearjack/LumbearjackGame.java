@@ -6,14 +6,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import app.JApplication;
+import gui.AudioSprite;
 import io.FileIntoText;
 import io.ResourceFinder;
 import resources.Marker;
@@ -92,6 +96,7 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
     screens.add(exitButton);
 
     screens.add(this.startScreen.getView());
+    backgroundMusic();
 
   }
 
@@ -234,4 +239,32 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
     }
   }
 
+  /**
+   * Creates our background music in our title screen.
+   */
+  public void backgroundMusic()
+  {
+    // We need to only use .wav files for audio since it's the only supported.
+    InputStream is = this.rf.findInputStream("danny_main_theme.wav");
+    BufferedInputStream bf = new BufferedInputStream(is);
+    try
+    {
+      // Creates our audio and starts music right away.
+      AudioSprite audio = new AudioSprite(bf, 0);
+      audio.handleTick(0);
+    }
+    catch (IOException e)
+    {
+      e.printStackTrace();
+    }
+    catch (LineUnavailableException e)
+    {
+      e.printStackTrace();
+    }
+    catch (UnsupportedAudioFileException e)
+    {
+      e.printStackTrace();
+    }
+  }
+  
 }
