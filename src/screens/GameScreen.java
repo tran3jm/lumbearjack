@@ -1,6 +1,7 @@
 package screens;
 
 import game_components.BearFrames;
+import game_components.GameBar;
 import game_components.TreeFrames;
 import game_components.TreeLife;
 import io.GameComponentObserver;
@@ -24,6 +25,7 @@ public class GameScreen extends MainScreen implements KeyListener
   private HashMap<String, Content> treeFrames;
   private TreeLife treelife;
   private boolean winner;
+  private GameBar gameBar;
 
   /**
    * Creates our gameplay screen for users to play.
@@ -38,13 +40,16 @@ public class GameScreen extends MainScreen implements KeyListener
 
     // setting up game components
     this.treelife = new TreeLife(this.rf);
+    this.gameBar = new GameBar(this.rf);
+
     bearFrames = new BearFrames(this.rf, height).getFrames();
     treeFrames = new TreeFrames(this.rf, height).getFrames();
 
     // setting up main observer and adding observers
     gco = new GameComponentObserver();
     gco.addObserver(treelife);
-
+    
+    
     this.addKeyListener(this);
     this.addGameComponents();
   }
@@ -78,6 +83,9 @@ public class GameScreen extends MainScreen implements KeyListener
       {
         this.remove(treeFrames.get(TreeFrames.FH_TREE));
         this.add(treeFrames.get(TreeFrames.PH_TREE));
+        this.remove(this.gameBar);
+        this.add(this.gameBar);
+
       }
 
       // change tree frame if full damage/user has won the game
@@ -85,6 +93,8 @@ public class GameScreen extends MainScreen implements KeyListener
       {
         this.remove(treeFrames.get(TreeFrames.PH_TREE));
         this.add(treeFrames.get(TreeFrames.CUT_TREE));
+        this.remove(this.gameBar);
+
       }
      
       this.remove(bearFrames.get(BearFrames.CHOP));
@@ -130,6 +140,7 @@ public class GameScreen extends MainScreen implements KeyListener
     this.add(treeFrames.get(TreeFrames.FH_TREE));
     this.add(bearFrames.get(BearFrames.SWING));
     this.add(this.treelife);
+    this.add(this.gameBar);
   }
 
   @Override
