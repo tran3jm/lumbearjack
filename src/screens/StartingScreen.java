@@ -2,8 +2,6 @@ package screens;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
-
-import game_components.Cursor;
 import io.ResourceFinder;
 import visual.statik.sampled.BufferedImageOpFactory;
 import visual.statik.sampled.Content;

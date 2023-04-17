@@ -11,7 +11,7 @@ import utils.GameColorPallet;
 import visual.statik.SimpleContent;
 
 /**
- * Creates our gamebar mechanic.
+ * Creates our GameBar mechanic.
  */
 public class GameBar implements SimpleContent
 {
@@ -19,22 +19,23 @@ public class GameBar implements SimpleContent
   private RoundRectangle2D bar;
   private RoundRectangle2D greenZone;
   private int recX, recY;
-  private CursorOnBar cursorOnBar;
 
   /**
    * Default Constructor for our GameBar.
    * 
    * @param rf
    *          resource finder
+   * @param recX
+   * @param recY
+   * @param cursorOnBar
    */
-  public GameBar(final ResourceFinder rf, final int recX, final int recY, CursorOnBar cursorOnBar)
+  public GameBar(final ResourceFinder rf, final int recX, 
+                 final int recY, final CursorOnBar cursorOnBar)
   {
     this.recX = recX;
     this.recY = recY;
     this.bar = new RoundRectangle2D.Double(this.recX, this.recY, 500, 35, 15, 15);
     this.greenZone = new RoundRectangle2D.Double(this.recX + 80, this.recY + 2, 100, 35, 5, 5);
-    this.cursorOnBar = cursorOnBar;
-
   }
 
   @Override

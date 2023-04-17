@@ -3,15 +3,13 @@ package game_components;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Shape;
-import java.awt.geom.Arc2D;
-
 import java.awt.geom.Path2D;
 
 import visual.statik.described.AggregateContent;
 import visual.statik.described.Content;
 
 /**
- * Cursor for our gamebar. UNUSED DOES NOT WORK AS INTENDED
+ * Cursor for our gamebar.
  */
 public class Cursor extends AggregateContent
 {
@@ -28,6 +26,10 @@ public class Cursor extends AggregateContent
     add(c);
   }
 
+  /**
+   * Creates a triangle shape for our cursor.
+   * @return the cursor.
+   */
   private Shape triangle()
   {
     Path2D triangle = new Path2D.Double();

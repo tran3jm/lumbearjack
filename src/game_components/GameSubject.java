@@ -29,8 +29,8 @@ public interface GameSubject
   /**
    * Notifies observer.
    * 
-   * @param observer
-   *          Observer to remove
+   * @param hit
+   *          damage
    */
   public void notifyObservers(double hit);
 }

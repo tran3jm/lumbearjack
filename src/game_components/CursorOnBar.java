@@ -7,13 +7,14 @@ import visual.dynamic.described.DescribedSprite;
 
 /**
  * Class that adds animation to our cursor.
- * UNUSED, DOES NOT WORK AS INTENDED.
  */
 public class CursorOnBar extends DescribedSprite
 {
   
   /**
    * Constructor.
+   * @param x
+   * @param y
    */
   public CursorOnBar(final int x, final int y)
   {
@@ -24,9 +25,10 @@ public class CursorOnBar extends DescribedSprite
     this.addKeyTime(2000, new Point2D.Double(x, y), 0.0, 1.0, c);
   }
   
-  /**
-   * Returns current place of cursor.
-   */
+/**
+ * Returns our current location on the bar.
+ * @return current location.
+ */
   public Rectangle2D getCurrentLocation()
   {
     return this.getBounds2D();

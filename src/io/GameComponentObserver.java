@@ -29,7 +29,7 @@ public class GameComponentObserver implements GameSubject
   }
 
   @Override
-  public void notifyObservers(double hit)
+  public void notifyObservers(final double hit)
   {
     for (GameObserver wo : observers)
     {

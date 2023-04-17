@@ -17,7 +17,7 @@ public class ChopSound implements GameObserver
   }
 
   @Override
-  public void handleHit(double hit)
+  public void handleHit(final double hit)
   {
     // TODO Auto-generated method stub
 

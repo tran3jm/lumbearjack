@@ -91,7 +91,7 @@ public class TreeLife implements SimpleContent, GameObserver
   }
 
   @Override
-  public void handleHit(double hit)
+  public void handleHit(final double hit)
   {
     // will make this cleaner later
     if (230 < hit && hit < 430) this.damage += 1;

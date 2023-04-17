@@ -15,7 +15,7 @@ public interface GameObserver
 
   /**
    * Adds datum into list.
-   * 
+   * @param hit the damage
    */
-  public void handleHit(double hit);
+  public void handleHit(final double hit);
 }

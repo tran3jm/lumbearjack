@@ -2,7 +2,6 @@ package screens;
 
 import gui.BlurredBackground;
 import io.ResourceFinder;
-import visual.Visualization;
 import visual.VisualizationView;
 import visual.dynamic.described.Stage;
 import visual.statik.sampled.Content;
@@ -22,6 +21,7 @@ public class MainScreenStage extends Stage
    * 
    * @param width
    * @param height
+   * @param metronome
    * @param rf
    */
   public MainScreenStage(final int width, final int height, final int metronome,
