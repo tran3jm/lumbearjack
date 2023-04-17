@@ -1,55 +1,57 @@
 package screens;
 
-import game_components.BearFrames;
-import game_components.GameBar;
-import game_components.TreeFrames;
-import game_components.TreeLife;
+import game_components.*;
 import io.GameComponentObserver;
 import io.ResourceFinder;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.util.HashMap;
 import visual.statik.sampled.Content;
 
 /**
  * GameScreen that contains the actually game play of LumBearJack.
-
+ * 
  * @author joselynetran
  *
  */
-public class GameScreen extends MainScreen implements KeyListener 
+public class GameScreen extends MainScreenStage implements KeyListener
 {
   public static final int SPACEKEY = 32;
   private GameComponentObserver gco;
+
+  private GameBar gameBar;
+  private CursorOnBar cursorOnBar;
   private HashMap<String, Content> bearFrames;
   private HashMap<String, Content> treeFrames;
   private TreeLife treelife;
   private boolean winner;
-  private GameBar gameBar;
 
   /**
    * Creates our gameplay screen for users to play.
+   * 
    * @param width
    * @param height
    * @param rf
+   * @throws IOException
    */
-  public GameScreen(final int width, final int height, final ResourceFinder rf)
+  public GameScreen(final int width, final int height, final ResourceFinder rf) throws IOException
   {
-    super(width, height, rf);
+    super(width, height, 10, rf);
+    this.setRestartTime(2000);
     this.winner = false;
 
     // setting up game components
     this.treelife = new TreeLife(this.rf);
-    this.gameBar = new GameBar(this.rf);
-
-    bearFrames = new BearFrames(this.rf, height).getFrames();
-    treeFrames = new TreeFrames(this.rf, height).getFrames();
+    this.cursorOnBar = new CursorOnBar(150, height - 70);
+    this.gameBar = new GameBar(this.rf, 150, height - 100, this.cursorOnBar);
+    this.bearFrames = new BearFrames(this.rf, height).getFrames();
+    this.treeFrames = new TreeFrames(this.rf, height).getFrames();
 
     // setting up main observer and adding observers
     gco = new GameComponentObserver();
-    gco.addObserver(treelife);
-    
-    
+    gco.addObserver(this.treelife);
+
     this.addKeyListener(this);
     this.addGameComponents();
   }
@@ -63,8 +65,9 @@ public class GameScreen extends MainScreen implements KeyListener
     {
       // must remove current frame to replace with next frame
       this.remove(bearFrames.get(BearFrames.SWING));
-      this.add(bearFrames.get(BearFrames.CHOP)); 
+      this.add(bearFrames.get(BearFrames.CHOP));
     }
+    placeGameBarFront();
   }
 
   @Override
@@ -75,16 +78,13 @@ public class GameScreen extends MainScreen implements KeyListener
 
     if (key == SPACEKEY && !this.treelife.hasWon())
     {
-      gco.notifyObservers();
-      
-      
+      gco.notifyObservers(this.cursorOnBar.getCurrentLocation().getX());
+
       // change tree frame if half damage
       if (this.treelife.halfDamage())
       {
         this.remove(treeFrames.get(TreeFrames.FH_TREE));
         this.add(treeFrames.get(TreeFrames.PH_TREE));
-        this.remove(this.gameBar);
-        this.add(this.gameBar);
 
       }
 
@@ -93,17 +93,17 @@ public class GameScreen extends MainScreen implements KeyListener
       {
         this.remove(treeFrames.get(TreeFrames.PH_TREE));
         this.add(treeFrames.get(TreeFrames.CUT_TREE));
-        this.remove(this.gameBar);
 
       }
-     
+
       this.remove(bearFrames.get(BearFrames.CHOP));
       this.add(bearFrames.get(BearFrames.SWING));
     }
     else if (key == SPACEKEY && this.treelife.hasWon())
-    {    
+    {
       this.winner = true;
     }
+    placeGameBarFront();
   }
 
   /**
@@ -123,13 +123,14 @@ public class GameScreen extends MainScreen implements KeyListener
   {
     this.treelife.reset();
     this.winner = false;
-    
+
     this.remove(treeFrames.get(TreeFrames.CUT_TREE));
     this.remove(bearFrames.get(BearFrames.SWING));
-    
+
     this.add(treeFrames.get(TreeFrames.FH_TREE));
     this.add(bearFrames.get(BearFrames.SWING));
-    
+    placeGameBarFront();
+
   }
 
   /**
@@ -137,10 +138,14 @@ public class GameScreen extends MainScreen implements KeyListener
    */
   private void addGameComponents()
   {
-    this.add(treeFrames.get(TreeFrames.FH_TREE));
-    this.add(bearFrames.get(BearFrames.SWING));
+    this.add(this.treeFrames.get(TreeFrames.FH_TREE));
+    this.add(this.bearFrames.get(BearFrames.SWING));
     this.add(this.treelife);
+
+    // setting up cursor bar animation
     this.add(this.gameBar);
+    this.add(this.cursorOnBar);
+    this.start();
   }
 
   @Override
@@ -150,4 +155,11 @@ public class GameScreen extends MainScreen implements KeyListener
 
   }
 
+  private void placeGameBarFront()
+  {
+    this.remove(this.gameBar);
+    this.remove(this.cursorOnBar);
+    this.add(this.gameBar);
+    this.add(this.cursorOnBar);
+  }
 }

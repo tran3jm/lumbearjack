@@ -17,11 +17,6 @@ public interface GameSubject
    */
   public void addObserver(final GameObserver observer);
 
-  /**
-   * Notifies observe when datum is read.
-   * 
-   */
-  public void notifyObservers();
 
   /**
    * Removes observer.
@@ -30,4 +25,12 @@ public interface GameSubject
    *          Observer to remove
    */
   public void removeObserver(final GameObserver observer);
+
+  /**
+   * Notifies observer.
+   * 
+   * @param observer
+   *          Observer to remove
+   */
+  public void notifyObservers(double hit);
 }

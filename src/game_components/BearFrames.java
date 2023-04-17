@@ -52,9 +52,9 @@ public class BearFrames implements Frames
     {
       // if chop bear, must move slightly to right due to width
       if (key == CHOP)
-        bearFrames.get(key).setLocation(40, screenHeight / 10);
+        bearFrames.get(key).setLocation(40, screenHeight / 9);
       else
-        bearFrames.get(key).setLocation(-10, screenHeight / 10);
+        bearFrames.get(key).setLocation(-10, screenHeight / 9);
     }
   }
 
@@ -66,7 +66,7 @@ public class BearFrames implements Frames
    */
   public void addFrames(final String key, final String filename)
   {
-    Content content = ScaledImage.scaledImage(filename, this.rf, 0.44);
+    Content content = ScaledImage.scaledImage(filename, this.rf, 0.48);
     bearFrames.put(key, content);
   }
 

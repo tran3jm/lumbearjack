@@ -15,4 +15,5 @@ public class GameColorPallet
   public static final Color BLUE_BUBBLE = new Color(173, 216, 230);
   public static final Color BRIGHT_GREEN = new Color(163, 208, 160);
   public static final Color TREE_GREEN = new Color(103,168,98);
+  public static final Color BAR_FILLER = new Color(.75f, .75f, .75f, .5f);
 }

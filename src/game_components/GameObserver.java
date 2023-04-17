@@ -17,5 +17,5 @@ public interface GameObserver
    * Adds datum into list.
    * 
    */
-  public void handleHit();
+  public void handleHit(double hit);
 }

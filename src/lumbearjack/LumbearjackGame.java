@@ -84,19 +84,18 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
    */
   public void init()
   {
-
     int buttonX = this.width / 4 + 70;
     int buttonY = this.height / 2 + 130;
     this.setUpButtons(buttonX, buttonY);
 
     JPanel screens = (JPanel) this.getContentPane();
     screens.setLayout(null);
-
     screens.add(startButton);
     screens.add(exitButton);
-
     screens.add(this.startScreen.getView());
+    
     backgroundMusic();
+    
 
   }
 
@@ -117,6 +116,7 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
   @Override
   public void actionPerformed(final ActionEvent evt)
   {
+    
 
     String ac = evt.getActionCommand();
     JPanel cp = (JPanel) this.getContentPane();
@@ -141,7 +141,6 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
         wipeContentPane(cp);
         cp.add(helpButton);
         cp.add(this.gameScreen.getView());
-        this.gameScreen.reset();
         this.gameScreen.addKeyListener(this);
         break;
 
@@ -236,6 +235,7 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
       screen.add(replayButton);
       screen.add(exitButton);
       screen.add(this.winnerScreen.getView());
+      this.gameScreen.reset();
     }
   }
 

@@ -63,7 +63,7 @@ public class TreeLife implements SimpleContent, GameObserver
 
     // rectangle bar behind health
     g = (Graphics2D) arg0;
-    g.setColor(new Color(.75f, .75f, .75f, .5f));
+    g.setColor(GameColorPallet.BAR_FILLER);
     g.fill(backgroundBar);
 
     // actual tree health rectangle
@@ -91,9 +91,10 @@ public class TreeLife implements SimpleContent, GameObserver
   }
 
   @Override
-  public void handleHit()
+  public void handleHit(double hit)
   {
-    this.damage += 1;
+    // will make this cleaner later
+    if (230 < hit && hit < 430) this.damage += 1;
 
     // if tree is chopped, then set health rectangle to be invisible
     if (this.hasWon())

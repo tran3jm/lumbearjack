@@ -46,7 +46,7 @@ public class TreeFrames implements Frames
   {
     for (String key : treeFrames.keySet())
     {
-      treeFrames.get(key).setLocation(250, -100);
+      treeFrames.get(key).setLocation(250, -80);
     }
   }
 

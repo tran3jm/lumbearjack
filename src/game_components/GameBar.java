@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.RoundRectangle2D;
 
 import io.ResourceFinder;
+import utils.GameColorPallet;
 import visual.statik.SimpleContent;
 
 /**
@@ -14,49 +15,54 @@ import visual.statik.SimpleContent;
  */
 public class GameBar implements SimpleContent
 {
-  
+
   private RoundRectangle2D bar;
   private RoundRectangle2D greenZone;
   private int recX, recY;
+  private CursorOnBar cursorOnBar;
+
   /**
    * Default Constructor for our GameBar.
-   * @param rf resource finder
+   * 
+   * @param rf
+   *          resource finder
    */
-  public GameBar(final ResourceFinder rf)
+  public GameBar(final ResourceFinder rf, final int recX, final int recY, CursorOnBar cursorOnBar)
   {
-    this.recX = 465;
-    this.recY = 500;
-    this.bar = new RoundRectangle2D.Double(this.recX, this.recY, 200, 25, 15, 15);
-    this.greenZone = new RoundRectangle2D.Double(this.recX+80, this.recY+2, 40, 21, 5, 5);
+    this.recX = recX;
+    this.recY = recY;
+    this.bar = new RoundRectangle2D.Double(this.recX, this.recY, 500, 35, 15, 15);
+    this.greenZone = new RoundRectangle2D.Double(this.recX + 80, this.recY + 2, 100, 35, 5, 5);
+    this.cursorOnBar = cursorOnBar;
 
-    
   }
-  
+
   @Override
   public void render(final Graphics arg0)
   {
     Graphics2D g;
 
-    RoundRectangle2D backgroundBar = new RoundRectangle2D.Double(this.recX, this.recY, 200, 25, 15,
+    RoundRectangle2D backgroundBar = new RoundRectangle2D.Double(this.recX, this.recY, 500, 35, 15,
         15);
 
     // rectangle bar behind hit area
     g = (Graphics2D) arg0;
-    g.setColor(new Color(.75f, .75f, .75f, .5f));
+    g.setColor(new Color(255, 90, 70));
     g.fill(backgroundBar);
 
     // gamebar
-    g.setColor(Color.WHITE);
+    g.setColor(GameColorPallet.BAR_FILLER);
     g.fill(this.bar);
+
+    // greenZone in gamebar.
+    g.setColor((GameColorPallet.BRIGHT_GREEN));
+    g.fill(this.greenZone);
 
     // Border of gamebar
     g.setStroke(new BasicStroke(4));
     g.setColor(Color.black);
     g.draw(this.bar);
-    
-    // greenZone in gamebar.
-    g.setColor(new Color(124,252,0));
-    g.fill(this.greenZone);
+
   }
-  
+
 }
