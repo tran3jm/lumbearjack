@@ -3,10 +3,14 @@ package screens;
 import game_components.*;
 import io.GameComponentObserver;
 import io.ResourceFinder;
+import utils.ScaledImage;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Random;
+
 import visual.statik.sampled.Content;
 
 /**
@@ -25,8 +29,11 @@ public class GameScreen extends MainScreenStage implements KeyListener
   private HashMap<String, Content> bearFrames;
   private HashMap<String, Content> treeFrames;
   private TreeLife treelife;
+  private Content spacebarIndicator;
   private boolean winner;
-
+  private int level; 
+  private int barX, barY;
+  private int greenX, greenY;
   /**
    * Creates our gameplay screen for users to play.
    * 
@@ -40,14 +47,23 @@ public class GameScreen extends MainScreenStage implements KeyListener
     super(width, height, 10, rf);
     this.setRestartTime(2000);
     this.winner = false;
-
+    this.level = 1;
+    this.barX = 150;
+    this.barY = height - 100;
+    // Level 1 will always have the same location for the green area.
+    this.greenX = this.barX + 80;
+    this.greenY = this.barY + 2;
+    
     // setting up game components
-    this.treelife = new TreeLife(this.rf);
+    this.spacebarIndicator = ScaledImage.scaledImage("click_spacebar.png", this.rf, 1);
+    this.spacebarIndicator.setLocation(width - 100, height - 250);
+    this.treelife = new TreeLife(this.rf, this.greenX, this.greenX + 100);
     this.cursorOnBar = new CursorOnBar(150, height - 70);
-    this.gameBar = new GameBar(this.rf, 150, height - 100, this.cursorOnBar);
+    this.gameBar = new GameBar(this.rf, this.barX, this.barY, 
+                               this.greenX, this.greenY, this.cursorOnBar);
     this.bearFrames = new BearFrames(this.rf, height).getFrames();
     this.treeFrames = new TreeFrames(this.rf, height).getFrames();
-
+    
     // setting up main observer and adding observers
     gco = new GameComponentObserver();
     gco.addObserver(this.treelife);
@@ -102,6 +118,7 @@ public class GameScreen extends MainScreenStage implements KeyListener
     else if (key == SPACEKEY && this.treelife.hasWon())
     {
       this.winner = true;
+      this.levelUp();
     }
     placeGameBarFront();
   }
@@ -122,6 +139,7 @@ public class GameScreen extends MainScreenStage implements KeyListener
   public void reset()
   {
     this.treelife.reset();
+    levelUp();
     this.winner = false;
 
     this.remove(treeFrames.get(TreeFrames.CUT_TREE));
@@ -141,7 +159,8 @@ public class GameScreen extends MainScreenStage implements KeyListener
     this.add(this.treeFrames.get(TreeFrames.FH_TREE));
     this.add(this.bearFrames.get(BearFrames.SWING));
     this.add(this.treelife);
-
+    this.add(this.spacebarIndicator);
+    
     // setting up cursor bar animation
     this.add(this.gameBar);
     this.add(this.cursorOnBar);
@@ -161,5 +180,21 @@ public class GameScreen extends MainScreenStage implements KeyListener
     this.remove(this.cursorOnBar);
     this.add(this.gameBar);
     this.add(this.cursorOnBar);
+  }
+  
+  /**
+   * Handles our leveling features.
+   */
+  private void levelUp()
+  {
+    // increase our level (to be used/displayed)
+    this.level += 1;
+    Random ran = new Random();
+    int nxt = ran.nextInt(150, 545);
+    this.greenX = nxt;
+    this.gameBar = new GameBar(this.rf, this.barX, this.barY, 
+        this.greenX, this.greenY, this.cursorOnBar);  
+    this.treelife.setNewMinBound(this.greenX);
+    this.treelife.setNewMaxBound(this.greenX + 100);
   }
 }

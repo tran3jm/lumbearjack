@@ -30,14 +30,21 @@ public class TreeLife implements SimpleContent, GameObserver
   private double damage;
   private int recX;
   private int recY;
+  
+  private int minBound;
+  private int maxBound;
 
   /**
    * Constructor for treelife.
    * 
    * @param rf
    *          for BufferedImages
+   * @param minBound
+   *		  minBound of cursor hit
+   * @param maxBound
+   *		  maxBound of cursor hit
    */
-  public TreeLife(final ResourceFinder rf)
+  public TreeLife(final ResourceFinder rf, final int minBound, final int maxBound)
   {
 
     // for reading in necessary bufferedimages
@@ -46,6 +53,10 @@ public class TreeLife implements SimpleContent, GameObserver
     // sets up x and y coordinates of elements
     this.recX = 125;
     this.recY = 23;
+    
+    // sets up min and max bound of cursor
+    this.minBound = minBound;
+    this.maxBound = maxBound;
 
     this.healthContainer = new RoundRectangle2D.Double(this.recX, this.recY, 200, 50, 15, 15);
     this.health = new Rectangle(this.recX, this.recY + 2, 195, 45);
@@ -94,7 +105,7 @@ public class TreeLife implements SimpleContent, GameObserver
   public void handleHit(final double hit)
   {
     // will make this cleaner later
-    if (230 < hit && hit < 430) this.damage += 1;
+    if (this.minBound < hit && hit < this.maxBound) this.damage += 5;
 
     // if tree is chopped, then set health rectangle to be invisible
     if (this.hasWon())
@@ -105,7 +116,7 @@ public class TreeLife implements SimpleContent, GameObserver
   }
 
   /**
-   * Returns if tree has no more life.
+   * Returns if tree has no more life. 
    * 
    * @return true or false if tree is cut
    */
@@ -122,6 +133,24 @@ public class TreeLife implements SimpleContent, GameObserver
   public boolean halfDamage()
   {
     return this.damage == TOTAL_TREE_HEALTH / 2;
+  }
+  
+  /**
+   * Setter for setting lowest bound of greenArea.
+   * @param min
+   */
+  public void setNewMinBound(final int min)
+  {
+    this.minBound = min;
+  }
+  
+  /**
+   * Setter for setting maximum bound of greenArea.
+   * @param max
+   */
+  public void setNewMaxBound(final int max)
+  {
+    this.maxBound = max;
   }
 
   /**
