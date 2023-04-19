@@ -13,15 +13,20 @@ import java.io.InputStream;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import app.JApplication;
 import gui.AudioSprite;
+import gui.HelpFrame;
+import gui.SampledDynamicContentFactory;
 import io.FileIntoText;
 import io.ResourceFinder;
 import resources.Marker;
 import screens.*;
+import visual.VisualizationView;
+import visual.dynamic.sampled.Screen;
 
 /**
  * 
@@ -93,9 +98,8 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
     screens.add(startButton);
     screens.add(exitButton);
     screens.add(this.startScreen.getView());
-    
+
     backgroundMusic();
-    
 
   }
 
@@ -116,7 +120,6 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
   @Override
   public void actionPerformed(final ActionEvent evt)
   {
-    
 
     String ac = evt.getActionCommand();
     JPanel cp = (JPanel) this.getContentPane();
@@ -145,8 +148,7 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
         break;
 
       case (HELP):
-        JOptionPane.showMessageDialog(getContentPane(),
-            FileIntoText.fileIntoText("instructions.txt", this.rf));
+        this.helpFrame();
         break;
 
       default:
@@ -182,6 +184,12 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
 
     continueButton.setBounds(this.width / 2 + 100, this.height - 150, 250, 55);
     helpButton.setBounds(20, 20, 55, 55);
+  }
+
+  private void helpFrame()
+  {
+    JFrame helpPopup = new HelpFrame(this.rf);
+    helpPopup.setVisible(true);
   }
 
   /**
@@ -266,5 +274,5 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
       e.printStackTrace();
     }
   }
-  
+
 }

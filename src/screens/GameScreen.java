@@ -55,8 +55,8 @@ public class GameScreen extends MainScreenStage implements KeyListener
     this.greenY = this.barY + 2;
     
     // setting up game components
-    this.spacebarIndicator = ScaledImage.scaledImage("click_spacebar.png", this.rf, 1);
-    this.spacebarIndicator.setLocation(width - 100, height - 250);
+//    this.spacebarIndicator = ScaledImage.scaledImage("click_spacebar.png", this.rf, 0.15);
+//    this.spacebarIndicator.setLocation(280, 280);
     this.treelife = new TreeLife(this.rf, this.greenX, this.greenX + 100);
     this.cursorOnBar = new CursorOnBar(150, height - 70);
     this.gameBar = new GameBar(this.rf, this.barX, this.barY, 
