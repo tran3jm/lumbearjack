@@ -44,12 +44,12 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
   private static final String HELP = "?";
   private static final String REPLAY = "REPLAY";
 
-  // Screens to go through
+  // Screens/Frames to go through
   private StartingScreen startScreen;
   private LoreScreen loreScreen;
   private GameScreen gameScreen;
   private WinnerScreen winnerScreen;
-  private Font font;
+  private JFrame helpPopup;
 
   // JButttons
   private JButton startButton;
@@ -57,6 +57,10 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
   private JButton continueButton;
   private JButton helpButton;
   private JButton replayButton;
+  
+  // Misc setup
+  private Font font;
+  private boolean playedBefore;
 
   private ResourceFinder rf;
 
@@ -82,6 +86,8 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
     this.winnerScreen = new WinnerScreen(width, height, this.rf);
     this.loreScreen = new LoreScreen(width, height, this.rf, this.font);
     this.gameScreen = new GameScreen(width, height, this.rf);
+    this.helpPopup = new HelpFrame(this.rf);
+    this.playedBefore = false;
   }
 
   /**
@@ -142,13 +148,17 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
       case (CHOP):
       case (REPLAY):
         wipeContentPane(cp);
+        if (!playedBefore) {
+          this.helpPopup.setVisible(true);
+          playedBefore = true;
+        }
         cp.add(helpButton);
         cp.add(this.gameScreen.getView());
         this.gameScreen.addKeyListener(this);
         break;
 
       case (HELP):
-        this.helpFrame();
+        helpPopup.setVisible(true);
         break;
 
       default:
@@ -184,12 +194,6 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
 
     continueButton.setBounds(this.width / 2 + 100, this.height - 150, 250, 55);
     helpButton.setBounds(20, 20, 55, 55);
-  }
-
-  private void helpFrame()
-  {
-    JFrame helpPopup = new HelpFrame(this.rf);
-    helpPopup.setVisible(true);
   }
 
   /**

@@ -36,6 +36,7 @@ public class HelpFrame extends JFrame
   {
     Screen screen;
     this.setSize(400, 303);
+    this.setLocation(200, 100);
     this.setResizable(false);
     SampledDynamicContentFactory sdcf;
 
