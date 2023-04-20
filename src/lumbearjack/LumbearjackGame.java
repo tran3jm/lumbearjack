@@ -14,19 +14,14 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import app.JApplication;
 import gui.AudioSprite;
 import gui.HelpFrame;
-import gui.SampledDynamicContentFactory;
-import io.FileIntoText;
 import io.ResourceFinder;
 import resources.Marker;
 import screens.*;
-import visual.VisualizationView;
-import visual.dynamic.sampled.Screen;
 
 /**
  * 
@@ -148,7 +143,8 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
       case (CHOP):
       case (REPLAY):
         wipeContentPane(cp);
-        if (!playedBefore) {
+        if (!playedBefore) 
+        {
           this.helpPopup.setVisible(true);
           playedBefore = true;
         }

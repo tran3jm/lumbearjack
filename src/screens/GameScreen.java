@@ -3,7 +3,6 @@ package screens;
 import game_components.*;
 import io.GameComponentObserver;
 import io.ResourceFinder;
-import utils.ScaledImage;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

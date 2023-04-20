@@ -34,7 +34,6 @@ public class HelpFrame extends JFrame
    */
   public void init()
   {
-    Screen screen;
     this.setSize(400, 303);
     this.setLocation(200, 100);
     this.setResizable(false);
