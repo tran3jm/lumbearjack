@@ -29,7 +29,7 @@ public class GameScreen extends MainScreenStage implements KeyListener
   private HashMap<String, Content> treeFrames;
   private TreeLife treelife;
   private Content spacebarIndicator;
-  private boolean winner;
+  private boolean winner, loser;
   private int level; 
   private int barX, barY;
   private int greenX, greenY;
@@ -46,6 +46,7 @@ public class GameScreen extends MainScreenStage implements KeyListener
     super(width, height, 10, rf);
     this.setRestartTime(2000);
     this.winner = false;
+    this.loser = false;
     this.level = 1;
     this.barX = 150;
     this.barY = height - 100;
@@ -91,7 +92,7 @@ public class GameScreen extends MainScreenStage implements KeyListener
     // keycode -> keys mapped to specific numbers
     int key = e.getKeyCode();
 
-    if (key == SPACEKEY && !this.treelife.hasWon())
+    if (key == SPACEKEY && !this.treelife.hasWon() && this.treelife.getLives() > 0)
     {
       gco.notifyObservers(this.cursorOnBar.getCurrentLocation().getX());
 
@@ -119,9 +120,21 @@ public class GameScreen extends MainScreenStage implements KeyListener
       this.winner = true;
       this.levelUp();
     }
+    else if (this.treelife.getLives() <= 0)
+    {
+      this.loser = true;
+    }
     placeGameBarFront();
   }
-
+  
+  /**
+   * Returns if we lost all our lives.
+   * @return boolean.
+   */
+  public boolean noLives() 
+  {
+    return this.loser;
+  }
   /**
    * Returns if game is finished.
    * 
@@ -140,7 +153,8 @@ public class GameScreen extends MainScreenStage implements KeyListener
     this.treelife.reset();
     levelUp();
     this.winner = false;
-
+    this.loser = false;
+    
     this.remove(treeFrames.get(TreeFrames.CUT_TREE));
     this.remove(bearFrames.get(BearFrames.SWING));
 

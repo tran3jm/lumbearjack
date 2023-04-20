@@ -34,6 +34,7 @@ public class TreeLife implements SimpleContent, GameObserver
   private int minBound;
   private int maxBound;
 
+  private int lives;
   /**
    * Constructor for treelife.
    * 
@@ -62,6 +63,7 @@ public class TreeLife implements SimpleContent, GameObserver
     this.health = new Rectangle(this.recX, this.recY + 2, 195, 45);
     this.damage = 0;
 
+    this.lives = 3;
   }
 
   @Override
@@ -99,13 +101,21 @@ public class TreeLife implements SimpleContent, GameObserver
     // damage is back to 0 and health bar is back to full width
     this.damage = 0;
     this.health = new Rectangle(this.recX, this.recY + 2, 195, 45);
+    this.lives = 3;
   }
 
   @Override
   public void handleHit(final double hit)
   {
     // will make this cleaner later
-    if (this.minBound < hit && hit < this.maxBound) this.damage += 5;
+    if (this.minBound < hit && hit < this.maxBound)
+    {
+      this.damage += 5;
+    }
+    else
+    {
+      this.lives -= 1;
+    }
 
     // if tree is chopped, then set health rectangle to be invisible
     if (this.hasWon())
@@ -115,6 +125,14 @@ public class TreeLife implements SimpleContent, GameObserver
 
   }
 
+  /**
+   * Getter for the amount of lives.
+   * @return the lives remaining.
+   */
+  public int getLives()
+  {
+    return this.lives;
+  }
   /**
    * Returns if tree has no more life. 
    * 

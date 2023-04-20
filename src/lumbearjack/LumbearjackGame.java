@@ -44,6 +44,7 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
   private LoreScreen loreScreen;
   private GameScreen gameScreen;
   private WinnerScreen winnerScreen;
+  private LosingScreen losingScreen;
   private JFrame helpPopup;
 
   // JButttons
@@ -81,6 +82,7 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
     this.winnerScreen = new WinnerScreen(width, height, this.rf);
     this.loreScreen = new LoreScreen(width, height, this.rf, this.font);
     this.gameScreen = new GameScreen(width, height, this.rf);
+    this.losingScreen = new LosingScreen(width, height, this.rf);
     this.helpPopup = new HelpFrame(this.rf);
     this.playedBefore = false;
   }
@@ -243,6 +245,14 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
       screen.add(replayButton);
       screen.add(exitButton);
       screen.add(this.winnerScreen.getView());
+      this.gameScreen.reset();
+    }
+    else if (key == GameScreen.SPACEKEY && this.gameScreen.noLives())
+    {
+      wipeContentPane(screen);
+      screen.add(replayButton);
+      screen.add(exitButton);
+      screen.add(this.losingScreen.getView());
       this.gameScreen.reset();
     }
   }
