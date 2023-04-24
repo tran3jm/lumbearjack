@@ -33,6 +33,13 @@ public class GameScreen extends MainScreenStage implements KeyListener
   private int level; 
   private int barX, barY;
   private int greenX, greenY;
+  private int height;
+  
+  private enum LevelChange 
+  {
+     SPEED_CHANGE,
+     MOVE_BAR
+  }
   /**
    * Creates our gameplay screen for users to play.
    * 
@@ -44,6 +51,7 @@ public class GameScreen extends MainScreenStage implements KeyListener
   public GameScreen(final int width, final int height, final ResourceFinder rf) throws IOException
   {
     super(width, height, 10, rf);
+    this.height = height;
     this.setRestartTime(2000);
     this.winner = false;
     this.loser = false;
@@ -58,7 +66,7 @@ public class GameScreen extends MainScreenStage implements KeyListener
 //    this.spacebarIndicator = ScaledImage.scaledImage("click_spacebar.png", this.rf, 0.15);
 //    this.spacebarIndicator.setLocation(280, 280);
     this.treelife = new TreeLife(this.rf, this.greenX, this.greenX + 100);
-    this.cursorOnBar = new CursorOnBar(150, height - 70);
+    this.cursorOnBar = new CursorOnBar(150, height - 70, 0, 1000, 2000);
     this.gameBar = new GameBar(this.rf, this.barX, this.barY, 
                                this.greenX, this.greenY, this.cursorOnBar);
     this.bearFrames = new BearFrames(this.rf, height).getFrames();
@@ -151,7 +159,6 @@ public class GameScreen extends MainScreenStage implements KeyListener
   public void reset()
   {
     this.treelife.reset();
-    levelUp();
     this.winner = false;
     this.loser = false;
     
@@ -203,11 +210,28 @@ public class GameScreen extends MainScreenStage implements KeyListener
     // increase our level (to be used/displayed)
     this.level += 1;
     Random ran = new Random();
-    int nxt = ran.nextInt(150, 545);
-    this.greenX = nxt;
-    this.gameBar = new GameBar(this.rf, this.barX, this.barY, 
-        this.greenX, this.greenY, this.cursorOnBar);  
-    this.treelife.setNewMinBound(this.greenX);
-    this.treelife.setNewMaxBound(this.greenX + 100);
+    LevelChange rng = LevelChange.values()[ran.nextInt(LevelChange.values().length)];
+    switch (rng) 
+    {
+      case MOVE_BAR:
+        int nxt = ran.nextInt(150, 545);
+        this.greenX = nxt;
+        this.gameBar = new GameBar(this.rf, this.barX, this.barY, 
+            this.greenX, this.greenY, this.cursorOnBar);  
+        this.treelife.setNewMinBound(this.greenX);
+        this.treelife.setNewMaxBound(this.greenX + 100);
+        break;
+      case SPEED_CHANGE:
+        int keyTime1, keyTime2, keyTime3;
+        int change = ran.nextInt(0, 500);
+        keyTime1 = 0;
+        keyTime2 = 1000 - change;
+        keyTime3 = 2000 - change;
+        this.cursorOnBar = new CursorOnBar(150, this.height - 70, keyTime1, keyTime2, keyTime3);
+        this.setRestartTime(keyTime3);
+        break;
+      default:
+        break;
+    }
   }
 }
