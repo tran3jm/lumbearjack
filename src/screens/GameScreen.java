@@ -214,7 +214,7 @@ public class GameScreen extends MainScreenStage implements KeyListener
     switch (rng) 
     {
       case MOVE_BAR:
-        int nxt = ran.nextInt(150, 545);
+        int nxt = ran.nextInt(395) + 150;
         this.greenX = nxt;
         this.gameBar = new GameBar(this.rf, this.barX, this.barY, 
             this.greenX, this.greenY, this.cursorOnBar);  
@@ -223,7 +223,7 @@ public class GameScreen extends MainScreenStage implements KeyListener
         break;
       case SPEED_CHANGE:
         int keyTime1, keyTime2, keyTime3;
-        int change = ran.nextInt(0, 500);
+        int change = ran.nextInt(500);
         keyTime1 = 0;
         keyTime2 = 1000 - change;
         keyTime3 = 2000 - change;
