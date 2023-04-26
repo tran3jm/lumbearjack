@@ -21,7 +21,9 @@ import visual.statik.sampled.ImageFactory;
  */
 public class TreeLife implements SimpleContent, GameObserver
 {
-
+  
+  public boolean playerMissed;
+  
   private static final double TOTAL_TREE_HEALTH = 30.0;
   private ResourceFinder rf;
 
@@ -64,6 +66,7 @@ public class TreeLife implements SimpleContent, GameObserver
     this.damage = 0;
 
     this.lives = 3;
+    this.playerMissed = false;
   }
 
   @Override
@@ -111,10 +114,12 @@ public class TreeLife implements SimpleContent, GameObserver
     if (this.minBound < hit && hit < this.maxBound)
     {
       this.damage += 5;
+      this.playerMissed = false;
     }
     else
     {
       this.lives -= 1;
+      this.playerMissed = true;
     }
 
     // if tree is chopped, then set health rectangle to be invisible
@@ -150,7 +155,7 @@ public class TreeLife implements SimpleContent, GameObserver
    */
   public boolean halfDamage()
   {
-    return this.damage == TOTAL_TREE_HEALTH / 2;
+    return this.damage >= TOTAL_TREE_HEALTH / 2;
   }
   
   /**

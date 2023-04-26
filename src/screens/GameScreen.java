@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Random;
 
+import bears.PlainBearFrames;
 import visual.statik.sampled.Content;
 
 /**
@@ -63,13 +64,11 @@ public class GameScreen extends MainScreenStage implements KeyListener
     this.greenY = this.barY + 2;
     
     // setting up game components
-//    this.spacebarIndicator = ScaledImage.scaledImage("click_spacebar.png", this.rf, 0.15);
-//    this.spacebarIndicator.setLocation(280, 280);
     this.treelife = new TreeLife(this.rf, this.greenX, this.greenX + 100);
     this.cursorOnBar = new CursorOnBar(150, height - 70, 0, 1000, 2000);
     this.gameBar = new GameBar(this.rf, this.barX, this.barY, 
                                this.greenX, this.greenY, this.cursorOnBar);
-    this.bearFrames = new BearFrames(this.rf, height).getFrames();
+    this.bearFrames = new PlainBearFrames(this.rf, height).getFrames();
     this.treeFrames = new TreeFrames(this.rf, height).getFrames();
     
     // setting up main observer and adding observers
@@ -88,8 +87,12 @@ public class GameScreen extends MainScreenStage implements KeyListener
     if (key == SPACEKEY && !this.treelife.hasWon())
     {
       // must remove current frame to replace with next frame
-      this.remove(bearFrames.get(BearFrames.SWING));
-      this.add(bearFrames.get(BearFrames.CHOP));
+      this.remove(bearFrames.get(PlainBearFrames.SWING));
+      this.remove(bearFrames.get(PlainBearFrames.MISS));
+     
+      this.add(bearFrames.get(PlainBearFrames.CHOP));
+
+      
     }
     placeGameBarFront();
   }
@@ -103,25 +106,15 @@ public class GameScreen extends MainScreenStage implements KeyListener
     if (key == SPACEKEY && !this.treelife.hasWon() && this.treelife.getLives() > 0)
     {
       gco.notifyObservers(this.cursorOnBar.getCurrentLocation().getX());
-
-      // change tree frame if half damage
-      if (this.treelife.halfDamage())
-      {
-        this.remove(treeFrames.get(TreeFrames.FH_TREE));
-        this.add(treeFrames.get(TreeFrames.PH_TREE));
-
-      }
-
-      // change tree frame if full damage/user has won the game
-      if (this.treelife.hasWon())
-      {
-        this.remove(treeFrames.get(TreeFrames.PH_TREE));
-        this.add(treeFrames.get(TreeFrames.CUT_TREE));
-
-      }
-
-      this.remove(bearFrames.get(BearFrames.CHOP));
-      this.add(bearFrames.get(BearFrames.SWING));
+      this.clearFrames();
+      
+      // change tree depending on how much damage done to it
+      if (this.treelife.halfDamage()) this.add(treeFrames.get(TreeFrames.PH_TREE));
+      else if (this.treelife.hasWon()) this.add(treeFrames.get(TreeFrames.CUT_TREE));
+      else this.add(treeFrames.get(TreeFrames.FH_TREE));
+      
+      if (!this.treelife.playerMissed) this.add(bearFrames.get(PlainBearFrames.SWING));
+      else this.add(bearFrames.get(PlainBearFrames.MISS));
     }
     else if (key == SPACEKEY && this.treelife.hasWon())
     {
@@ -161,12 +154,10 @@ public class GameScreen extends MainScreenStage implements KeyListener
     this.treelife.reset();
     this.winner = false;
     this.loser = false;
+    this.clearFrames();
     
-    this.remove(treeFrames.get(TreeFrames.CUT_TREE));
-    this.remove(bearFrames.get(BearFrames.SWING));
-
     this.add(treeFrames.get(TreeFrames.FH_TREE));
-    this.add(bearFrames.get(BearFrames.SWING));
+    this.add(bearFrames.get(PlainBearFrames.SWING));
     placeGameBarFront();
 
   }
@@ -177,7 +168,7 @@ public class GameScreen extends MainScreenStage implements KeyListener
   private void addGameComponents()
   {
     this.add(this.treeFrames.get(TreeFrames.FH_TREE));
-    this.add(this.bearFrames.get(BearFrames.SWING));
+    this.add(this.bearFrames.get(PlainBearFrames.SWING));
     this.add(this.treelife);
     this.add(this.spacebarIndicator);
     
@@ -234,4 +225,20 @@ public class GameScreen extends MainScreenStage implements KeyListener
         break;
     }
   }
+  
+  /**
+   * Helper method to remove all frames and
+   * add new ones.
+   */
+  private void clearFrames()
+  {
+    this.remove(treeFrames.get(TreeFrames.CUT_TREE));
+    this.remove(treeFrames.get(TreeFrames.FH_TREE));
+    this.remove(treeFrames.get(TreeFrames.PH_TREE));
+    this.remove(bearFrames.get(PlainBearFrames.SWING));
+    this.remove(bearFrames.get(PlainBearFrames.MISS));
+    this.remove(bearFrames.get(PlainBearFrames.CHOP));
+    
+  }
+  
 }

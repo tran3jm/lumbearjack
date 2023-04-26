@@ -43,8 +43,7 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
   private StartingScreen startScreen;
   private LoreScreen loreScreen;
   private GameScreen gameScreen;
-  private WinnerScreen winnerScreen;
-  private LosingScreen losingScreen;
+  private TransitionScreen transitionScreen;
   private JFrame helpPopup;
 
   // JButttons
@@ -79,10 +78,9 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
 
     // setting up all screens
     this.startScreen = new StartingScreen(width, height, this.rf);
-    this.winnerScreen = new WinnerScreen(width, height, this.rf);
+    this.transitionScreen = new TransitionScreen(width, height, this.rf, TransitionScreen.LEVEL_UP);
     this.loreScreen = new LoreScreen(width, height, this.rf, this.font);
     this.gameScreen = new GameScreen(width, height, this.rf);
-    this.losingScreen = new LosingScreen(width, height, this.rf);
     this.helpPopup = new HelpFrame(this.rf);
     this.playedBefore = false;
   }
@@ -244,15 +242,17 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
       wipeContentPane(screen);
       screen.add(replayButton);
       screen.add(exitButton);
-      screen.add(this.winnerScreen.getView());
+      screen.add(this.transitionScreen.getView());
       this.gameScreen.reset();
     }
     else if (key == GameScreen.SPACEKEY && this.gameScreen.noLives())
     {
       wipeContentPane(screen);
+      this.transitionScreen.setTransitionImage(TransitionScreen.GAME_OVER);
+      System.out.println("hi!");
       screen.add(replayButton);
       screen.add(exitButton);
-      screen.add(this.losingScreen.getView());
+      screen.add(this.transitionScreen.getView());
       this.gameScreen.reset();
     }
   }

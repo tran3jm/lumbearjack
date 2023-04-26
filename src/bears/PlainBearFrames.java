@@ -1,18 +1,23 @@
-package game_components;
+package bears;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 
+import game_components.Frames;
 import io.ResourceFinder;
 import utils.ScaledImage;
 import visual.statik.sampled.Content;
 
 /**
- * Bear image frames.
+ * Original image frames.
  * 
  * @author joselynetran
  *
  */
-public class BearFrames implements Frames
+public class PlainBearFrames implements Frames
 {
 
   // Bear frames keys
@@ -22,10 +27,10 @@ public class BearFrames implements Frames
 
   private int screenHeight;
   private ResourceFinder rf;
-  
+  private String[] imageNames;
+
   // will map bear frame to name --> <"name", bearimage>
   private HashMap<String, Content> bearFrames = new HashMap<>();
-  
 
   /**
    * Constructor.
@@ -33,14 +38,41 @@ public class BearFrames implements Frames
    * @param rf
    * @param screenHeight
    */
-  public BearFrames(final ResourceFinder rf, final int screenHeight)
+  public PlainBearFrames(final ResourceFinder rf, final int screenHeight)
   {
     this.rf = rf;
     this.screenHeight = screenHeight;
-    this.addFrames(SWING, "danny_prechop.png");
-    this.addFrames(CHOP, "danny_chop.png");
-    this.addFrames(MISS, "danny_miss.png");
+    this.imageNames = new String[3];
+    this.setImageNames();
+
+    this.addFrames(SWING, this.imageNames[0]);
+    this.addFrames(CHOP, this.imageNames[1]);
+    this.addFrames(MISS, this.imageNames[2]);
     setLocation();
+  }
+
+  private void setImageNames()
+  {
+    this.readImageNames("plaindanny.txt");
+  }
+
+  private void readImageNames(String filename)
+  {
+
+    InputStream is = rf.findInputStream(filename);
+    BufferedReader in = new BufferedReader(new InputStreamReader(is));
+
+    for (int i = 0; i < 3; i++)
+    {
+      try
+      {
+        this.imageNames[i] = in.readLine();
+      }
+      catch (IOException e)
+      {
+        this.imageNames[i] = "danny_prechop.png";
+      }
+    }
   }
 
   /**
