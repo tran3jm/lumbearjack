@@ -16,21 +16,24 @@ import visual.statik.sampled.ImageFactory;
  */
 public class TransitionScreen extends MainScreen
 {
+  public static final String GAME_OVER = "game_over.png";
+  public static final String WINNER = "winner.png";
+  public static final String LEVEL_UP = "level_up.png";
   
   private String filename;
   private Content content;
   
-  public static final String GAME_OVER = "game_over.png";
-  public static final String WINNER = "winner.png";
-  public static final String LEVEL_UP = "level_up.png";
+
 
   /**
    * 
    * @param width
    * @param height
    * @param rf
+   * @param transitionImgFile
    */
-  public TransitionScreen(final int width, final int height, final ResourceFinder rf, final String transitionImgFile)
+  public TransitionScreen(final int width, final int height, 
+                          final ResourceFinder rf, final String transitionImgFile)
   {
     super(width, height, rf);
     this.filename = transitionImgFile;
@@ -40,11 +43,11 @@ public class TransitionScreen extends MainScreen
   /**
    * TransitionImage.
    * 
-   * @param filename
+   * @param fn
    */
-  public void setTransitionImage(final String filename)
+  public void setTransitionImage(final String fn)
   {
-    switch(filename)
+    switch(fn)
     {
       case WINNER:
         this.filename = WINNER;

@@ -29,9 +29,10 @@ public class GameScreen extends MainScreenStage implements KeyListener
   private HashMap<String, Content> bearFrames;
   private HashMap<String, Content> treeFrames;
   private TreeLife treelife;
+  private PlayerTries lives;
   private Content spacebarIndicator;
   private boolean winner, loser;
-  private int level; 
+  //private int level; 
   private int barX, barY;
   private int greenX, greenY;
   private int height;
@@ -56,7 +57,7 @@ public class GameScreen extends MainScreenStage implements KeyListener
     this.setRestartTime(2000);
     this.winner = false;
     this.loser = false;
-    this.level = 1;
+    //this.level = 1;
     this.barX = 150;
     this.barY = height - 100;
     // Level 1 will always have the same location for the green area.
@@ -65,6 +66,7 @@ public class GameScreen extends MainScreenStage implements KeyListener
     
     // setting up game components
     this.treelife = new TreeLife(this.rf, this.greenX, this.greenX + 100);
+    this.lives = new PlayerTries(this.rf, this.greenX, this.greenX + 100);
     this.cursorOnBar = new CursorOnBar(150, height - 70, 0, 1000, 2000);
     this.gameBar = new GameBar(this.rf, this.barX, this.barY, 
                                this.greenX, this.greenY, this.cursorOnBar);
@@ -74,7 +76,8 @@ public class GameScreen extends MainScreenStage implements KeyListener
     // setting up main observer and adding observers
     gco = new GameComponentObserver();
     gco.addObserver(this.treelife);
-
+    gco.addObserver(this.lives);
+    
     this.addKeyListener(this);
     this.addGameComponents();
   }
@@ -103,7 +106,7 @@ public class GameScreen extends MainScreenStage implements KeyListener
     // keycode -> keys mapped to specific numbers
     int key = e.getKeyCode();
 
-    if (key == SPACEKEY && !this.treelife.hasWon() && this.treelife.getLives() > 0)
+    if (key == SPACEKEY && !this.treelife.hasWon() && this.lives.getLives() > 0)
     {
       gco.notifyObservers(this.cursorOnBar.getCurrentLocation().getX());
       this.clearFrames();
@@ -113,15 +116,16 @@ public class GameScreen extends MainScreenStage implements KeyListener
       else if (this.treelife.hasWon()) this.add(treeFrames.get(TreeFrames.CUT_TREE));
       else this.add(treeFrames.get(TreeFrames.FH_TREE));
       
-      if (!this.treelife.playerMissed) this.add(bearFrames.get(PlainBearFrames.SWING));
+      if (!this.treelife.playerMisses()) this.add(bearFrames.get(PlainBearFrames.SWING));
       else this.add(bearFrames.get(PlainBearFrames.MISS));
+    
     }
     else if (key == SPACEKEY && this.treelife.hasWon())
     {
       this.winner = true;
       this.levelUp();
     }
-    else if (this.treelife.getLives() <= 0)
+    else if (this.lives.getLives() <= 0)
     {
       this.loser = true;
     }
@@ -152,6 +156,8 @@ public class GameScreen extends MainScreenStage implements KeyListener
   public void reset()
   {
     this.treelife.reset();
+    this.lives.reset();
+    updateLives();
     this.winner = false;
     this.loser = false;
     this.clearFrames();
@@ -171,7 +177,8 @@ public class GameScreen extends MainScreenStage implements KeyListener
     this.add(this.bearFrames.get(PlainBearFrames.SWING));
     this.add(this.treelife);
     this.add(this.spacebarIndicator);
-    
+    updateLives();
+
     // setting up cursor bar animation
     this.add(this.gameBar);
     this.add(this.cursorOnBar);
@@ -185,13 +192,30 @@ public class GameScreen extends MainScreenStage implements KeyListener
 
   }
 
+  /**
+   * Updates the Screen for our Lives.
+   */
+  private void updateLives() 
+  {
+    for (int i = 0; i < this.lives.getContentArray().length; i++)
+    {
+      this.remove(this.lives.getContentArray()[i]);
+    }
+    for (int i = 0; i < this.lives.getContentArray().length; i++)
+    {
+      this.add(this.lives.getContentArray()[i]);
+    }
+  }
+  
   private void placeGameBarFront()
   {
     this.remove(this.gameBar);
     this.remove(this.cursorOnBar);
     this.add(this.gameBar);
     this.add(this.cursorOnBar);
+    updateLives();
   }
+  
   
   /**
    * Handles our leveling features.
@@ -199,7 +223,7 @@ public class GameScreen extends MainScreenStage implements KeyListener
   private void levelUp()
   {
     // increase our level (to be used/displayed)
-    this.level += 1;
+    //this.level += 1;
     Random ran = new Random();
     LevelChange rng = LevelChange.values()[ran.nextInt(LevelChange.values().length)];
     switch (rng) 
@@ -211,6 +235,7 @@ public class GameScreen extends MainScreenStage implements KeyListener
             this.greenX, this.greenY, this.cursorOnBar);  
         this.treelife.setNewMinBound(this.greenX);
         this.treelife.setNewMaxBound(this.greenX + 100);
+        this.lives.newBounds(this.greenX, this.greenX + 100);
         break;
       case SPEED_CHANGE:
         int keyTime1, keyTime2, keyTime3;

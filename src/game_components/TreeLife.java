@@ -21,10 +21,8 @@ import visual.statik.sampled.ImageFactory;
  */
 public class TreeLife implements SimpleContent, GameObserver
 {
-  
-  public boolean playerMissed;
-  
   private static final double TOTAL_TREE_HEALTH = 30.0;
+  private boolean playerMissed;  
   private ResourceFinder rf;
 
   private RoundRectangle2D healthContainer;
@@ -35,8 +33,6 @@ public class TreeLife implements SimpleContent, GameObserver
   
   private int minBound;
   private int maxBound;
-
-  private int lives;
   /**
    * Constructor for treelife.
    * 
@@ -65,7 +61,6 @@ public class TreeLife implements SimpleContent, GameObserver
     this.health = new Rectangle(this.recX, this.recY + 2, 195, 45);
     this.damage = 0;
 
-    this.lives = 3;
     this.playerMissed = false;
   }
 
@@ -104,7 +99,6 @@ public class TreeLife implements SimpleContent, GameObserver
     // damage is back to 0 and health bar is back to full width
     this.damage = 0;
     this.health = new Rectangle(this.recX, this.recY + 2, 195, 45);
-    this.lives = 3;
   }
 
   @Override
@@ -118,7 +112,6 @@ public class TreeLife implements SimpleContent, GameObserver
     }
     else
     {
-      this.lives -= 1;
       this.playerMissed = true;
     }
 
@@ -130,14 +123,7 @@ public class TreeLife implements SimpleContent, GameObserver
 
   }
 
-  /**
-   * Getter for the amount of lives.
-   * @return the lives remaining.
-   */
-  public int getLives()
-  {
-    return this.lives;
-  }
+  
   /**
    * Returns if tree has no more life. 
    * 
@@ -176,6 +162,14 @@ public class TreeLife implements SimpleContent, GameObserver
     this.maxBound = max;
   }
 
+  /**
+   * Did the player miss the mark?
+   * @return true or false.
+   */
+  public boolean playerMisses()
+  {
+    return this.playerMissed;
+  }
   /**
    * Helper function to set how much green the the health bar (the tree life) is visually shown.
    * 

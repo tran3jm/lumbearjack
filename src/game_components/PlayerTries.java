@@ -1,17 +1,12 @@
 package game_components;
 
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-
 import io.ResourceFinder;
 import utils.ScaledImage;
-import visual.statik.SimpleContent;
 import visual.statik.sampled.AggregateContent;
 import visual.statik.sampled.Content;
-import visual.statik.sampled.ImageFactory;
 
 /**
- * We should put playertries in this class once we can
+ * We should put playertries in this class once we can.
  * 
  * @author joselynetran
  *
@@ -20,19 +15,27 @@ public class PlayerTries extends AggregateContent implements GameObserver
 {
 
   private static final int TOTAL_TRIES = 3;
-  private int tries;
+  private static final String IMG_NAME = "tries.png";
+  private int tries, minBound, maxBound;
   private ResourceFinder rf;
-
   private Content[] tryContent;
 
-  public PlayerTries(ResourceFinder rf)
+  /**
+   * Constructor for PlayerTries.
+   * @param rf resource finder.
+   * @param minBound
+   * @param maxBound
+   */
+  public PlayerTries(final ResourceFinder rf, final int minBound, final int maxBound)
   {
     this.tries = TOTAL_TRIES;
     this.rf = rf;
     this.tryContent = new Content[3];
-
+    this.minBound = minBound;
+    this.maxBound = maxBound;
+   
     for (int i = 0; i < 3; i++)
-      this.tryContent[i] = ScaledImage.scaledImage("tries.png", rf, 0.5);
+      this.tryContent[i] = ScaledImage.scaledImage(IMG_NAME, rf, 0.25);
     
     init();
 
@@ -42,27 +45,74 @@ public class PlayerTries extends AggregateContent implements GameObserver
   public void reset()
   {
     // TODO Auto-generated method stub
-
+    this.tries = TOTAL_TRIES;
+    for (int i = 0; i < this.tries; i++)
+    {
+      if (this.tryContent[i] == null)
+      {
+        this.tryContent[i] = ScaledImage.scaledImage(IMG_NAME, rf, 0.25);
+      }
+    }
+    init();
   }
 
   @Override
-  public void handleHit(double hit)
+  public void handleHit(final double hit)
   {
-    // if (this.minBound < hit && hit < this.maxBound)
-    // {
-    //
-    // }
+    if (!(this.minBound < hit && hit < this.maxBound))
+    {
+      this.tries -= 1;
+      // Java's garbage collector will eventually clear it to save memory.
+      this.tryContent[this.tries] = null;
+    }
   }
 
+  /**
+   * sets the amount of tries.
+   * @param lives
+   * @return
+   */
+  public void setLives (final int lives)
+  {
+    this.tries = lives;
+  }
+  
+  /**
+   * Getter for the amount of lives.
+   * @return the lives remaining.
+   */
+  public int getLives()
+  {
+    return this.tries;
+  }
+  
+  /**
+   * Sets the new boundaries for our gamee.
+   * @param minB
+   * @param maxB
+   */
+  public void newBounds(final int minB, final int maxB)
+  {
+    this.minBound = minB;
+    this.maxBound = maxB;
+  }
+  
+  /**
+   * Getter to grab our lives in Content.
+   * @return the array of content.
+   */
+  public Content[] getContentArray()
+  {
+    return this.tryContent;
+  }
+  
   private void init()
   {
 
     for (int i = 0; i < 3; i++)
     {
-      this.tryContent[i].setLocation(20 + (i * 20), 20);
-      this.add(this.tryContent[i]);
+      this.tryContent[i].setLocation(500 + (i * 50), 28);
     }
-
   }
-
+ 
 }

@@ -56,7 +56,7 @@ public class PlainBearFrames implements Frames
     this.readImageNames("plaindanny.txt");
   }
 
-  private void readImageNames(String filename)
+  private void readImageNames(final String filename)
   {
 
     InputStream is = rf.findInputStream(filename);

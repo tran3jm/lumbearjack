@@ -38,7 +38,7 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
   private static final String START = "START";
   private static final String HELP = "?";
   private static final String REPLAY = "REPLAY";
-
+  private static final String NEXT = "LEVEL UP!";
   // Screens/Frames to go through
   private StartingScreen startScreen;
   private LoreScreen loreScreen;
@@ -52,7 +52,7 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
   private JButton continueButton;
   private JButton helpButton;
   private JButton replayButton;
-  
+  private JButton nextLevelButton;
   // Misc setup
   private Font font;
   private boolean playedBefore;
@@ -141,6 +141,7 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
 
       // replay will send user back to GameScreen
       case (CHOP):
+      case (NEXT):
       case (REPLAY):
         wipeContentPane(cp);
         if (!playedBefore) 
@@ -177,15 +178,18 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
     this.exitButton = new JButton(EXIT);
     this.continueButton = new JButton(CHOP);
     this.helpButton = new JButton(HELP);
-
+    this.nextLevelButton = new JButton(NEXT);
+    
     this.buttonSetter(startButton);
     this.buttonSetter(replayButton);
     this.buttonSetter(exitButton);
     this.buttonSetter(continueButton);
     this.buttonSetter(helpButton);
+    this.buttonSetter(nextLevelButton);
 
     startButton.setBounds(buttonX, buttonY, 250, 55);
     replayButton.setBounds(buttonX, buttonY, 250, 55);
+    nextLevelButton.setBounds(buttonX, buttonY, 250, 55);
     exitButton.setBounds(buttonX, buttonY + 60, 250, 55);
 
     continueButton.setBounds(this.width / 2 + 100, this.height - 150, 250, 55);
@@ -240,7 +244,8 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
     if (key == GameScreen.SPACEKEY && this.gameScreen.gameComplete())
     {
       wipeContentPane(screen);
-      screen.add(replayButton);
+      this.transitionScreen.setTransitionImage(TransitionScreen.LEVEL_UP);
+      screen.add(nextLevelButton);
       screen.add(exitButton);
       screen.add(this.transitionScreen.getView());
       this.gameScreen.reset();
@@ -249,7 +254,6 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
     {
       wipeContentPane(screen);
       this.transitionScreen.setTransitionImage(TransitionScreen.GAME_OVER);
-      System.out.println("hi!");
       screen.add(replayButton);
       screen.add(exitButton);
       screen.add(this.transitionScreen.getView());
