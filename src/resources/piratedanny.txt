@@ -1,0 +1,3 @@
+pirate_prechop.png
+pirate_chop.png
+pirate_miss.png

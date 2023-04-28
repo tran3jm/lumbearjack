@@ -229,9 +229,7 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
   @Override
   public void keyTyped(final KeyEvent e)
   {
-
     // TODO Auto-generated method stub
-
   }
 
   @Override
@@ -241,7 +239,15 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
 
     // keycode -> keys mapped to specific numbers
     int key = e.getKeyCode();
-    if (key == GameScreen.SPACEKEY && this.gameScreen.gameComplete())
+    if (key == GameScreen.SPACEKEY && this.gameScreen.gameFinished())
+    {
+      wipeContentPane(screen);
+      this.transitionScreen.setTransitionImage(TransitionScreen.WINNER);
+      screen.add(exitButton);
+      screen.add(this.transitionScreen.getView());
+      this.gameScreen.reset();
+    }
+    else if (key == GameScreen.SPACEKEY && this.gameScreen.levelComplete())
     {
       wipeContentPane(screen);
       this.transitionScreen.setTransitionImage(TransitionScreen.LEVEL_UP);
@@ -274,6 +280,8 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
       // Creates our audio and starts music right away.
       AudioSprite audio = new AudioSprite(bf, 0);
       audio.handleTick(0);
+      audio.loopForever();
+      
     }
     catch (IOException e)
     {

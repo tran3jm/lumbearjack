@@ -1,0 +1,3 @@
+straw_prechop.png
+straw_chop.png
+straw_miss.png

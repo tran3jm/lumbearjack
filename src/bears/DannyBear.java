@@ -17,7 +17,7 @@ import visual.statik.sampled.Content;
  * @author joselynetran
  *
  */
-public class PlainBearFrames implements Frames
+public class DannyBear implements Frames
 {
 
   // Bear frames keys
@@ -38,7 +38,7 @@ public class PlainBearFrames implements Frames
    * @param rf
    * @param screenHeight
    */
-  public PlainBearFrames(final ResourceFinder rf, final int screenHeight)
+  public DannyBear(final ResourceFinder rf, final int screenHeight)
   {
     this.rf = rf;
     this.screenHeight = screenHeight;
@@ -51,12 +51,12 @@ public class PlainBearFrames implements Frames
     setLocation();
   }
 
-  private void setImageNames()
+  protected void setImageNames()
   {
     this.readImageNames("plaindanny.txt");
   }
 
-  private void readImageNames(final String filename)
+  protected void readImageNames(final String filename)
   {
 
     InputStream is = rf.findInputStream(filename);

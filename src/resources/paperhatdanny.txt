@@ -1,0 +1,3 @@
+paperhat_prechop.png
+paperhat_chop.png
+paperhat_miss.png

@@ -9,9 +9,10 @@ import visual.statik.TransformableContent;
 
 /**
  * A simple Sprite that can be used to present
- * sampled auditory content that is stored in a file.
+ * sampled auditory content that is stored in a file
  * GIVEN AT URL: 
  *    https://w3.cs.jmu.edu/bernstdh/web/common/policies/multimedia-project-policies_group.php 
+ * Added one method. 
  * @author  Prof. David Bernstein, James Madison University
  * @version 1.0
  */
@@ -66,6 +67,13 @@ public class AudioSprite extends AbstractSprite
     if (time == startTime) clip.start();
   }
 
+  /**
+   * Loops forever for our music.
+   */
+  public void loopForever()
+  {
+    this.clip.loop(Clip.LOOP_CONTINUOUSLY);
+  }
   /**
    * Get the Content associated with this Audio Sprite.
    */
