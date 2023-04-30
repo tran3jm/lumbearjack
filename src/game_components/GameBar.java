@@ -30,14 +30,16 @@ public class GameBar implements SimpleContent
    * @param cursorOnBar
    * @param greenX
    * @param greenY
+   * @param greenWidth
    */
   public GameBar(final ResourceFinder rf, final int recX, 
-                 final int recY, final int greenX, final int greenY, final CursorOnBar cursorOnBar)
+                 final int recY, final int greenX, final int greenY, final int greenWidth,
+                 final CursorOnBar cursorOnBar)
   {
     this.recX = recX;
     this.recY = recY;
     this.bar = new RoundRectangle2D.Double(this.recX, this.recY, 500, 35, 15, 15);
-    this.greenZone = new RoundRectangle2D.Double(greenX, greenY, 100, 35, 5, 5);
+    this.greenZone = new RoundRectangle2D.Double(greenX, greenY, greenWidth, 35, 5, 5);
   }
 
   @Override

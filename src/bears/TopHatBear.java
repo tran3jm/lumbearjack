@@ -2,10 +2,19 @@ package bears;
 
 import io.ResourceFinder;
 
+/**
+ * TopHatBear.
+ *
+ */
 public class TopHatBear extends DannyBear
 {
 
-  public TopHatBear(ResourceFinder rf, int screenHeight)
+  /**
+   * TopHatBear.
+   * @param rf
+   * @param screenHeight
+   */
+  public TopHatBear(final ResourceFinder rf, final int screenHeight)
   {
     super(rf, screenHeight);
   }

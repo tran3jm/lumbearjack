@@ -2,6 +2,10 @@ package bears;
 
 import io.ResourceFinder;
 
+/**
+ * NOT USED CURRENTLY.
+ *
+ */
 public class SelectedBear
 {
   
@@ -13,27 +17,44 @@ public class SelectedBear
   private ResourceFinder rf;
   private int height;
   
-  public SelectedBear(ResourceFinder rf, int height)
+  /**
+   * Constructor for SelectedBear.
+   * @param rf
+   * @param height
+   */
+  public SelectedBear(final ResourceFinder rf, final int height)
   {
     this.rf = rf;
     this.height = height;
   }
   
-  public DannyBear selectBear(String bear)
+  /**
+   * DannyBear selector.
+   * @param bear 
+   * @return r
+   */
+  public DannyBear selectBear(final String bear)
   {
+    DannyBear bear2;
     switch(bear)
     {
       case TOPHAT:
-        return new TopHatBear(rf, height);
+        bear2 =  new TopHatBear(rf, height);
+        break;
       case STRAWHAT:
-        return new StrawHatBear(rf, height);
+        bear2 =  new StrawHatBear(rf, height);
+        break;
       case PIRATEHAT:
-        return new PirateBear(rf, height);
+        bear2 =  new PirateBear(rf, height);
+        break;
       case PAPERHAT:
-        return new PaperHatBear(rf, height);
-       default:
-         return new DannyBear(rf, height);
+        bear2 =  new PaperHatBear(rf, height);
+        break;
+      default:
+        bear2 = new DannyBear(rf, height);
+        break;
     }
+    return bear2;
   }
   
 }

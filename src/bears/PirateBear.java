@@ -2,10 +2,19 @@ package bears;
 
 import io.ResourceFinder;
 
+/**
+ * Piratebear!
+ *
+ */
 public class PirateBear extends DannyBear
 {
 
-  public PirateBear(ResourceFinder rf, int screenHeight)
+  /**
+   * Constructor for piratebear!
+   * @param rf
+   * @param screenHeight
+   */
+  public PirateBear(final ResourceFinder rf, final int screenHeight)
   {
     super(rf, screenHeight);
   }

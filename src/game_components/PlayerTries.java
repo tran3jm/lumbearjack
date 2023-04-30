@@ -14,7 +14,7 @@ import visual.statik.sampled.Content;
 public class PlayerTries extends AggregateContent implements GameObserver
 {
 
-  private static final int TOTAL_TRIES = 3;
+  private static int TOTAL_TRIES = 3;
   private static final String IMG_NAME = "tries.png";
   private int tries, minBound, maxBound;
   private ResourceFinder rf;
@@ -74,7 +74,24 @@ public class PlayerTries extends AggregateContent implements GameObserver
    */
   public void setLives (final int lives)
   {
-    this.tries = lives;
+    if (lives > 3)
+    {
+      TOTAL_TRIES = 3;
+    }
+    else
+    {
+      TOTAL_TRIES = lives;
+    }
+    this.tries = TOTAL_TRIES;
+    for (int i = 0; i < 3; i++)
+    {
+      if (i >= TOTAL_TRIES)
+      {
+        this.tryContent[i] = null;
+      }
+    }
+    reset();
+    
   }
   
   /**
@@ -109,10 +126,19 @@ public class PlayerTries extends AggregateContent implements GameObserver
   private void init()
   {
 
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < TOTAL_TRIES; i++)
     {
       this.tryContent[i].setLocation(500 + (i * 50), 28);
     }
+  }
+  
+  /**
+   * Returns the max lives possible.
+   * @return max lives.
+   */
+  public int getMaxLives()
+  {
+    return TOTAL_TRIES;
   }
  
 }

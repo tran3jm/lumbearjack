@@ -34,14 +34,16 @@ public class GameScreen extends MainScreenStage implements KeyListener
   private Content spacebarIndicator;
   private boolean levelcompleted, loser;
   private int barX, barY;
-  private int greenX, greenY;
+  private int greenX, greenY, greenWidth;
   private int height;
   private double cursorLocation;
   
   private enum LevelChange 
   {
      SPEED_CHANGE,
-     MOVE_BAR
+     MOVE_BAR,
+     GREEN_BAR_SIZE,
+     LESS_LIVES
   }
   /**
    * Creates our gameplay screen for users to play.
@@ -64,13 +66,16 @@ public class GameScreen extends MainScreenStage implements KeyListener
     // Level 1 will always have the same location for the green area.
     this.greenX = this.barX + 80;
     this.greenY = this.barY + 2;
+    this.greenWidth = 100;
     // setting up game components
-    this.treelife = new TreeLife(this.rf, this.greenX, this.greenX + 100);
-    this.lives = new PlayerTries(this.rf, this.greenX, this.greenX + 100);
+    // We are subtracting by 12 to account for input lag.
+    this.treelife = new TreeLife(this.rf, this.greenX-12, this.greenX + 110);
+    this.lives = new PlayerTries(this.rf, this.greenX-12, this.greenX + 110);
+    
     this.cursorOnBar = new CursorOnBar(150, height - 70, 0, 1000, 2000);
     this.gameBar = new GameBar(this.rf, this.barX, this.barY, 
-                               this.greenX, this.greenY, this.cursorOnBar);
-    this.bearFrames = new TopHatBear(this.rf, height).getFrames();
+                               this.greenX, this.greenY, this.greenWidth, this.cursorOnBar);
+    this.bearFrames = new DannyBear(this.rf, height).getFrames();
     this.treeFrames = new TreeFrames(this.rf, height).getFrames();
     
     this.cursorLocation = -1;
@@ -240,29 +245,65 @@ public class GameScreen extends MainScreenStage implements KeyListener
     this.levels -= 1;
     Random ran = new Random();
     LevelChange rng = LevelChange.values()[ran.nextInt(LevelChange.values().length)];
+    // System.out.println(rng);
     switch (rng) 
     {
       case MOVE_BAR:
         int nxt = ran.nextInt(395) + 150;
         this.greenX = nxt;
         this.gameBar = new GameBar(this.rf, this.barX, this.barY, 
-            this.greenX, this.greenY, this.cursorOnBar);  
-        this.treelife.setNewMinBound(this.greenX);
-        this.treelife.setNewMaxBound(this.greenX + 100);
-        this.lives.newBounds(this.greenX, this.greenX + 100);
+            this.greenX, this.greenY, 100, this.cursorOnBar);  
+        this.treelife.setNewMinBound(this.greenX-12);
+        this.treelife.setNewMaxBound(this.greenX + 110);
+        this.lives.newBounds(this.greenX-12, this.greenX + 110);
         break;
       case SPEED_CHANGE:
         int keyTime1, keyTime2, keyTime3;
-        int change = ran.nextInt(999);
+        int change = ran.nextInt(750);
         keyTime1 = 0;
         keyTime2 = 1000 - change;
         keyTime3 = 2000 - change;
         this.cursorOnBar = new CursorOnBar(150, this.height - 70, keyTime1, keyTime2, keyTime3);
         this.setRestartTime(keyTime3);
         break;
+      case GREEN_BAR_SIZE:
+        int width = ran.nextInt(60);
+        if (this.greenWidth < 25)
+        {
+          width = 25; 
+        }
+        this.greenWidth = 100-width;
+        this.gameBar = new GameBar(this.rf, this.barX, this.barY, 
+            this.greenX, this.greenY, 100-width, this.cursorOnBar); 
+        this.treelife.setNewMaxBound(this.greenX + 110-width);
+        this.lives.newBounds(this.greenX-12, this.greenX + 110-width);
+        break;
+      case LESS_LIVES:
+        // If we roll Less_Lives when we already only have 1 life available, 
+        // we want to call the method again to roll again.
+        if (this.lives.getMaxLives() == 1)
+        {
+          levelUp();
+        }
+        else
+        {
+          this.lives.setLives(this.lives.getMaxLives()-1);
+        }
+        break;
       default:
         break;
     }
+  }
+  
+  /**
+   * Sets the bear frames.
+   * @param bear the bear.
+   */
+  public void setBear(final DannyBear bear)
+  {
+    clearFrames();
+    this.bearFrames = bear.getFrames();
+    reset();
   }
   
   /**
