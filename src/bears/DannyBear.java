@@ -37,8 +37,9 @@ public class DannyBear implements Frames
    * 
    * @param rf
    * @param screenHeight
+   * @param filename
    */
-  public DannyBear(final ResourceFinder rf, final int screenHeight, String filename)
+  public DannyBear(final ResourceFinder rf, final int screenHeight, final String filename)
   {
     this.rf = rf;
     this.screenHeight = screenHeight;
@@ -109,10 +110,10 @@ public class DannyBear implements Frames
 
   /**
    * Returns Content to use one instance of content in the map.
-   * 
+   * @param key
    * @return Hashmap of the frames
    */
-  public Content getBearContent(String key)
+  public Content getBearContent(final String key)
   {
     return bearFrames.get(key);
   }

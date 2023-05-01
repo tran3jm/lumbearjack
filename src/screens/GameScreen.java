@@ -37,7 +37,7 @@ public class GameScreen extends MainScreenStage implements KeyListener
   private int greenX, greenY, greenWidth;
   private int height;
   private double cursorLocation;
-  
+  private ChopSound chop;
   private enum LevelChange 
   {
      SPEED_CHANGE,
@@ -68,9 +68,9 @@ public class GameScreen extends MainScreenStage implements KeyListener
     this.greenY = this.barY + 2;
     this.greenWidth = 100;
     // setting up game components
-    // We are subtracting by 12 to account for input lag.
-    this.treelife = new TreeLife(this.rf, this.greenX-12, this.greenX + 110);
-    this.lives = new PlayerTries(this.rf, this.greenX-12, this.greenX + 110);
+    // We are subtracting by 15 to account for input lag.
+    this.treelife = new TreeLife(this.rf, this.greenX-15, this.greenX + 110);
+    this.lives = new PlayerTries(this.rf, this.greenX-15, this.greenX + 110);
     
     this.cursorOnBar = new CursorOnBar(150, height - 70, 0, 1000, 2000);
     this.gameBar = new GameBar(this.rf, this.barX, this.barY, 
@@ -80,10 +80,12 @@ public class GameScreen extends MainScreenStage implements KeyListener
     
     this.cursorLocation = -1;
     
+    this.chop = new ChopSound(this.rf);
     // setting up main observer and adding observers
     gco = new GameComponentObserver();
     gco.addObserver(this.treelife);
     gco.addObserver(this.lives);
+    gco.addObserver(this.chop);
     
     this.addKeyListener(this);
     this.addGameComponents();
@@ -120,7 +122,9 @@ public class GameScreen extends MainScreenStage implements KeyListener
       gco.notifyObservers(this.cursorLocation);
       this.cursorLocation = -1;
       this.clearFrames();
-      
+      this.chop = new ChopSound(this.rf);
+      gco.addObserver(this.chop);
+
       // change tree depending on how much damage done to it
       if (this.treelife.halfDamage()) this.add(treeFrames.get(TreeFrames.PH_TREE));
       else if (this.treelife.hasWon()) this.add(treeFrames.get(TreeFrames.CUT_TREE));
@@ -252,10 +256,10 @@ public class GameScreen extends MainScreenStage implements KeyListener
         int nxt = ran.nextInt(395) + 150;
         this.greenX = nxt;
         this.gameBar = new GameBar(this.rf, this.barX, this.barY, 
-            this.greenX, this.greenY, 100, this.cursorOnBar);  
-        this.treelife.setNewMinBound(this.greenX-12);
-        this.treelife.setNewMaxBound(this.greenX + 110);
-        this.lives.newBounds(this.greenX-12, this.greenX + 110);
+            this.greenX, this.greenY, this.greenWidth, this.cursorOnBar);  
+        this.treelife.setNewMinBound(this.greenX-15);
+        this.treelife.setNewMaxBound(this.greenX + this.greenWidth + 10);
+        this.lives.newBounds(this.greenX-15, this.greenX + this.greenWidth + 10);
         break;
       case SPEED_CHANGE:
         int keyTime1, keyTime2, keyTime3;
@@ -268,15 +272,19 @@ public class GameScreen extends MainScreenStage implements KeyListener
         break;
       case GREEN_BAR_SIZE:
         int width = ran.nextInt(60);
-        if (this.greenWidth < 25)
+        if (this.greenWidth - width < 25)
         {
-          width = 25; 
+          this.greenWidth = 35; 
         }
-        this.greenWidth = 100-width;
+        else
+        {
+          this.greenWidth = this.greenWidth-width;          
+        }
         this.gameBar = new GameBar(this.rf, this.barX, this.barY, 
-            this.greenX, this.greenY, 100-width, this.cursorOnBar); 
-        this.treelife.setNewMaxBound(this.greenX + 110-width);
-        this.lives.newBounds(this.greenX-12, this.greenX + 110-width);
+            this.greenX, this.greenY, this.greenWidth, this.cursorOnBar); 
+        this.treelife.setNewMinBound(this.greenX-15);
+        this.treelife.setNewMaxBound(this.greenX + this.greenWidth + 10);
+        this.lives.newBounds(this.greenX-15, this.greenX + this.greenWidth + 10);
         break;
       case LESS_LIVES:
         // If we roll Less_Lives when we already only have 1 life available, 
