@@ -38,22 +38,17 @@ public class DannyBear implements Frames
    * @param rf
    * @param screenHeight
    */
-  public DannyBear(final ResourceFinder rf, final int screenHeight)
+  public DannyBear(final ResourceFinder rf, final int screenHeight, String filename)
   {
     this.rf = rf;
     this.screenHeight = screenHeight;
     this.imageNames = new String[3];
-    this.setImageNames();
+    this.readImageNames(filename);
 
     this.addFrames(SWING, this.imageNames[0]);
     this.addFrames(CHOP, this.imageNames[1]);
     this.addFrames(MISS, this.imageNames[2]);
     setLocation();
-  }
-
-  protected void setImageNames()
-  {
-    this.readImageNames("plaindanny.txt");
   }
 
   protected void readImageNames(final String filename)
@@ -110,6 +105,16 @@ public class DannyBear implements Frames
   public HashMap<String, Content> getFrames()
   {
     return bearFrames;
+  }
+
+  /**
+   * Returns Content to use one instance of content in the map.
+   * 
+   * @return Hashmap of the frames
+   */
+  public Content getBearContent(String key)
+  {
+    return bearFrames.get(key);
   }
 
 }

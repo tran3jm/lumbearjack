@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import app.JApplication;
+import bears.DannyBear;
 import gui.AudioSprite;
 import gui.HelpFrame;
 import io.ResourceFinder;
@@ -40,7 +41,9 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
   private static final String REPLAY = "REPLAY";
   private static final String NEXT = "LEVEL UP!";
   private static final String CUSTOMIZE = "CUSTOMIZE";
-  private static final String NEXT_CUSTOMIZE = "NEXT";
+  private static final String PREV_CUSTOMIZE = "<";
+  private static final String NEXT_CUSTOMIZE = ">";
+
   // Screens/Frames to go through
   private StartingScreen startScreen;
   private LoreScreen loreScreen;
@@ -57,6 +60,7 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
   private JButton replayButton;
   private JButton nextLevelButton;
   private JButton customizeButton;
+  private JButton prevCustomizeButton;
   private JButton nextCustomizeButton;
   // Misc setup
   private Font font;
@@ -144,12 +148,18 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
       case (CUSTOMIZE):
         wipeContentPane(cp);
         cp.add(continueButton);
+        continueButton.setBounds(this.width / 3, this.height - 100, 250, 55);
         cp.add(nextCustomizeButton);
+        cp.add(prevCustomizeButton);
         cp.add(this.customizeScreen.getView());
         break;
       case (NEXT_CUSTOMIZE):
-        this.customizeScreen.dannyIcon();
+        this.customizeScreen.nextDannyIcon();
         // System.out.println(this.customizeScreen.index);
+        this.gameScreen.setBear(this.customizeScreen.getBear());
+        break;
+      case (PREV_CUSTOMIZE):
+        this.customizeScreen.prevDannyIcon();
         this.gameScreen.setBear(this.customizeScreen.getBear());
         break;
       case (EXIT):
@@ -161,7 +171,9 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
       case (NEXT):
       case (REPLAY):
         wipeContentPane(cp);
-        if (!playedBefore) 
+        this.customizeScreen.getBear().getBearContent(DannyBear.SWING)
+          .setLocation(40, height / 9);
+        if (!playedBefore)
         {
           this.helpPopup.setVisible(true);
           playedBefore = true;
@@ -198,7 +210,8 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
     this.nextLevelButton = new JButton(NEXT);
     this.customizeButton = new JButton(CUSTOMIZE);
     this.nextCustomizeButton = new JButton(NEXT_CUSTOMIZE);
-    
+    this.prevCustomizeButton = new JButton(PREV_CUSTOMIZE);
+
     this.buttonSetter(startButton);
     this.buttonSetter(replayButton);
     this.buttonSetter(exitButton);
@@ -207,14 +220,16 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
     this.buttonSetter(nextLevelButton);
     this.buttonSetter(customizeButton);
     this.buttonSetter(nextCustomizeButton);
-    
+    this.buttonSetter(prevCustomizeButton);
+
     startButton.setBounds(buttonX, buttonY, 250, 55);
     replayButton.setBounds(buttonX, buttonY, 250, 55);
     nextLevelButton.setBounds(buttonX, buttonY, 250, 55);
     exitButton.setBounds(buttonX, buttonY + 60, 250, 55);
     continueButton.setBounds(this.width / 2 + 100, this.height - 150, 250, 55);
     customizeButton.setBounds(this.width / 2 + 100, this.height - 90, 250, 55);
-    nextCustomizeButton.setBounds(this.width / 2 - 395, this.height - 375, 225, 55);
+    nextCustomizeButton.setBounds(this.width - 65, this.height - 350, 55, 55);
+    prevCustomizeButton.setBounds(this.width / 2 - 395, this.height - 350, 55, 55);
     helpButton.setBounds(20, 20, 55, 55);
   }
 
@@ -303,7 +318,7 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
       AudioSprite audio = new AudioSprite(bf, 0);
       audio.handleTick(0);
       audio.loopForever();
-      
+
     }
     catch (IOException e)
     {

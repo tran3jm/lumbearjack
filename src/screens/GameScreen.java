@@ -75,7 +75,7 @@ public class GameScreen extends MainScreenStage implements KeyListener
     this.cursorOnBar = new CursorOnBar(150, height - 70, 0, 1000, 2000);
     this.gameBar = new GameBar(this.rf, this.barX, this.barY, 
                                this.greenX, this.greenY, this.greenWidth, this.cursorOnBar);
-    this.bearFrames = new DannyBear(this.rf, height).getFrames();
+    this.bearFrames = new DannyBear(this.rf, height, "plaindanny.txt").getFrames();
     this.treeFrames = new TreeFrames(this.rf, height).getFrames();
     
     this.cursorLocation = -1;

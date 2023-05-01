@@ -1,24 +1,30 @@
 package bears;
 
+import java.util.ArrayList;
+
 import io.ResourceFinder;
 
 /**
- * NOT USED CURRENTLY.
+ * Helper class to get selected bear for custom and game screen.
  *
+ * @author joselynetran and panamuhammad
+ * @version 04.30.2023
  */
 public class SelectedBear
 {
-  
-  public static final String TOPHAT = "top hat";
-  public static final String STRAWHAT = "straw hat";
-  public static final String PIRATEHAT = "pirate hat";
-  public static final String PAPERHAT = "paper hat";
-  
+
+  private static final String[] filenames = {"tophatdanny.txt", "plaindanny.txt", "strawdanny.txt",
+      "piratedanny.txt", "paperhatdanny.txt"};
+
+  private ArrayList<DannyBear> bears;
+
   private ResourceFinder rf;
   private int height;
-  
+  private int index;
+
   /**
    * Constructor for SelectedBear.
+   * 
    * @param rf
    * @param height
    */
@@ -26,35 +32,24 @@ public class SelectedBear
   {
     this.rf = rf;
     this.height = height;
+    this.index = 0;
+    
+    this.bears = new ArrayList<>();
+    for (String file: filenames) bears.add(new DannyBear(this.rf, this.height, file));
   }
-  
-  /**
-   * DannyBear selector.
-   * @param bear 
-   * @return r
-   */
-  public DannyBear selectBear(final String bear)
+
+  public DannyBear nextBear()
   {
-    DannyBear bear2;
-    switch(bear)
-    {
-      case TOPHAT:
-        bear2 =  new TopHatBear(rf, height);
-        break;
-      case STRAWHAT:
-        bear2 =  new StrawHatBear(rf, height);
-        break;
-      case PIRATEHAT:
-        bear2 =  new PirateBear(rf, height);
-        break;
-      case PAPERHAT:
-        bear2 =  new PaperHatBear(rf, height);
-        break;
-      default:
-        bear2 = new DannyBear(rf, height);
-        break;
-    }
-    return bear2;
+    this.index = (index + 1) % this.bears.size();
+    return this.bears.get(index);
+  }
+
+  public DannyBear prevBear()
+  {
+    if (index - 1 < 0) this.index = this.bears.size() - 1;
+    else this.index = (index - 1) % this.bears.size();
+    return this.bears.get(index);
   }
   
+
 }
