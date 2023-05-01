@@ -103,6 +103,8 @@ public class GameScreen extends MainScreenStage implements KeyListener
       this.remove(bearFrames.get(DannyBear.MISS));
      
       this.add(bearFrames.get(DannyBear.CHOP));
+      this.chop = new ChopSound(this.rf);
+      gco.addObserver(this.chop);
     }
     if (this.cursorLocation == -1)
     {
@@ -122,8 +124,7 @@ public class GameScreen extends MainScreenStage implements KeyListener
       gco.notifyObservers(this.cursorLocation);
       this.cursorLocation = -1;
       this.clearFrames();
-      this.chop = new ChopSound(this.rf);
-      gco.addObserver(this.chop);
+
 
       // change tree depending on how much damage done to it
       if (this.treelife.halfDamage()) this.add(treeFrames.get(TreeFrames.PH_TREE));
@@ -139,10 +140,8 @@ public class GameScreen extends MainScreenStage implements KeyListener
       this.levelcompleted = true;
       this.levelUp();
     }
-    else if (this.lives.getLives() <= 0)
-    {
-      this.loser = true;
-    }
+    this.loser = this.lives.getLives() <= 0;
+
     placeGameBarFront();
   }
   
