@@ -14,7 +14,7 @@ public class SelectedBear
 {
 
   private static final String[] FILENAMES = {"tophatdanny.txt", "plaindanny.txt", "strawdanny.txt",
-      "piratedanny.txt", "paperhatdanny.txt"};
+      "piratedanny.txt", "paperhatdanny.txt", "dukeduckdanny.txt"};
 
   private ArrayList<DannyBear> bears;
 

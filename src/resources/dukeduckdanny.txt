@@ -1,0 +1,3 @@
+dukeduck_prechop.png
+dukeduck_chop.png
+dukeduck_miss.png
