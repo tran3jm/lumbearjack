@@ -13,6 +13,7 @@ public class CursorOnBar extends DescribedSprite
   
   /**
    * Constructor.
+   *
    * @param x
    * @param y
    * @param keyTime1

@@ -27,6 +27,7 @@ public class BlurredBackground
   public static Content blurredBackground()
   {
     ResourceFinder rf = ResourceFinder.createInstance(new Marker());
+
     // initializing factories
     ImageFactory imageFactory = new ImageFactory(rf);
     ContentFactory contentFactory = new ContentFactory(rf);
@@ -38,6 +39,5 @@ public class BlurredBackground
   
     // creating backgroundphoto as content
     return contentFactory.createContent(blurOp.filter(backgroundPicture, null));
-//    return contentFactory.createContent(backgroundPicture);
   }
 }

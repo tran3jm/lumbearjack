@@ -55,7 +55,7 @@ public class LoreScreen extends MainScreen
   }
 
   /**
-   * Setting up lorebox that will have text contained in it.
+   * Setting up the box that will have text/lore contained in it.
    */
   private void setuploreBox()
   {

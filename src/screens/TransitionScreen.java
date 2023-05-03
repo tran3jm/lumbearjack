@@ -10,7 +10,7 @@ import visual.statik.sampled.ContentFactory;
 import visual.statik.sampled.ImageFactory;
 
 /**
- * 
+ * Class used to change views within certain actions of our game.
  * @author joselynetran
  *
  */
@@ -47,6 +47,7 @@ public class TransitionScreen extends MainScreen
    */
   public void setTransitionImage(final String fn)
   {
+    // Switch off the filename and removes/adds the screen.
     switch(fn)
     {
       case WINNER:
@@ -80,7 +81,7 @@ public class TransitionScreen extends MainScreen
     BufferedImage after = new BufferedImage(winnerBubbleLetters.getWidth(),
         winnerBubbleLetters.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
-    // creating danny the bear as content
+    // creating Danny the bear as content
     scaleOp.filter(winnerBubbleLetters, after);
     this.content = contentFactory.createContent(after);
     this.content.setLocation(this.view.getWidth() / 10, this.view.getHeight() / 50);

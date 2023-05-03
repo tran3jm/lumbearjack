@@ -7,9 +7,9 @@ import visual.VisualizationView;
 import visual.dynamic.sampled.Screen;
 
 /**
- * 
- * @author joselynetran
+ * Help animation that tells user how to play game.
  *
+ * @author joselynetran and panamuhamad
  */
 public class HelpFrame extends JFrame
 {
@@ -30,7 +30,7 @@ public class HelpFrame extends JFrame
   }
 
   /**
-   * 
+   * Intializer for animation.
    */
   public void init()
   {

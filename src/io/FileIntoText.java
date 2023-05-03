@@ -9,13 +9,14 @@ import java.io.InputStreamReader;
  * Helper util method to read text files into strings
  * to reduce redundancy.
  * 
- * @author joselynetran
+ * @author joselynetran nad panamuhamad
  *
  */
 public class FileIntoText
 {
   /**
-   * 
+   * Static method to convert file into String.
+   *
    * @param filename
    * @param rf
    * @return text from file

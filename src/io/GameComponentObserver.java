@@ -5,8 +5,9 @@ import java.util.List;
 
 import game_components.*;
 /**
- * 
- * @author joselynetran
+ * Class that holds all the game observers.
+ *
+ * @author joselynetran and panamuhamad
  *
  */
 public class GameComponentObserver implements GameSubject

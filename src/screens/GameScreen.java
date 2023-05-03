@@ -22,22 +22,21 @@ import visual.statik.sampled.Content;
 public class GameScreen extends MainScreenStage implements KeyListener
 {
   public static final int SPACEKEY = 32;
-  private GameComponentObserver gco;
-
-  private GameBar gameBar;
-  private CursorOnBar cursorOnBar;
-  private HashMap<String, Content> bearFrames;
-  private HashMap<String, Content> treeFrames;
-  private TreeLife treelife;
-  private PlayerTries lives;
   private int levels = 6;
-  private Content spacebarIndicator;
-  private boolean levelcompleted, loser;
   private int barX, barY;
   private int greenX, greenY, greenWidth;
   private int height;
   private double cursorLocation;
+  private boolean levelcompleted, loser;
   private ChopSound chop;
+  private Content spacebarIndicator;
+  private CursorOnBar cursorOnBar;
+  private GameComponentObserver gco;
+  private GameBar gameBar;
+  private HashMap<String, Content> bearFrames;
+  private HashMap<String, Content> treeFrames;
+  private PlayerTries lives;
+  private TreeLife treelife;
   private enum LevelChange 
   {
      SPEED_CHANGE,
@@ -60,7 +59,7 @@ public class GameScreen extends MainScreenStage implements KeyListener
     this.setRestartTime(2000);
     this.levelcompleted = false;
     this.loser = false;
-    //this.level = 1;
+    // Location for gamebar.
     this.barX = 150;
     this.barY = height - 100;
     // Level 1 will always have the same location for the green area.
@@ -72,14 +71,16 @@ public class GameScreen extends MainScreenStage implements KeyListener
     this.treelife = new TreeLife(this.rf, this.greenX-15, this.greenX + 110);
     this.lives = new PlayerTries(this.rf, this.greenX-15, this.greenX + 110);
     
+    // Sets up cursor and gamebar to display.
     this.cursorOnBar = new CursorOnBar(150, height - 70, 0, 1000, 2000);
     this.gameBar = new GameBar(this.rf, this.barX, this.barY, 
                                this.greenX, this.greenY, this.greenWidth, this.cursorOnBar);
+    // Sets up our frames default with danny bear.
     this.bearFrames = new DannyBear(this.rf, height, "plaindanny.txt").getFrames();
     this.treeFrames = new TreeFrames(this.rf, height).getFrames();
-    
+    // integer used to fix keypressed/released bug.
     this.cursorLocation = -1;
-    
+    // sound effect for our chop.
     this.chop = new ChopSound(this.rf);
     // setting up main observer and adding observers
     gco = new GameComponentObserver();
@@ -106,6 +107,7 @@ public class GameScreen extends MainScreenStage implements KeyListener
       this.chop = new ChopSound(this.rf);
       gco.addObserver(this.chop);
     }
+    // If the key has not already been pressed
     if (this.cursorLocation == -1)
     {
       this.cursorLocation = this.cursorOnBar.getCurrentLocation().getX();      
@@ -119,8 +121,10 @@ public class GameScreen extends MainScreenStage implements KeyListener
     // keycode -> keys mapped to specific numbers
     int key = e.getKeyCode();
 
+    // If space is pressed, and the tree has health, and the player still has tries
     if (key == SPACEKEY && !this.treelife.hasWon() && this.lives.getLives() > 0)
     {
+      // notifies all observers about the cursors location.
       gco.notifyObservers(this.cursorLocation);
       this.cursorLocation = -1;
       this.clearFrames();
@@ -131,15 +135,18 @@ public class GameScreen extends MainScreenStage implements KeyListener
       else if (this.treelife.hasWon()) this.add(treeFrames.get(TreeFrames.CUT_TREE));
       else this.add(treeFrames.get(TreeFrames.FH_TREE));
       
+      // If the player misses then we have an animation to show so.
       if (!this.treelife.playerMisses()) this.add(bearFrames.get(DannyBear.SWING));
       else this.add(bearFrames.get(DannyBear.MISS));
     
     }
+    // If the spacear is pressed and the tree is chopped, then we call levelup.
     else if (key == SPACEKEY && this.treelife.hasWon())
     {
       this.levelcompleted = true;
       this.levelUp();
     }
+    // This checks to see if we at any point lose all our lives/tries.
     this.loser = this.lives.getLives() <= 0;
 
     placeGameBarFront();
@@ -173,7 +180,7 @@ public class GameScreen extends MainScreenStage implements KeyListener
   	return this.levels == 0;    
   }
   /**
-   * Resets gamescreeen.
+   * Resets gamescreen.
    */
   public void reset()
   {
@@ -210,8 +217,7 @@ public class GameScreen extends MainScreenStage implements KeyListener
   @Override
   public void keyTyped(final KeyEvent e)
   {
-    // TODO Auto-generated method stub
-
+    // Does nothing for us.
   }   
 
   /**
@@ -229,6 +235,9 @@ public class GameScreen extends MainScreenStage implements KeyListener
     }
   }
   
+  /**
+   * So different sprites don't overlap the gamebar, cursor, and tries.
+   */
   private void placeGameBarFront()
   {
     this.remove(this.gameBar);
@@ -247,19 +256,20 @@ public class GameScreen extends MainScreenStage implements KeyListener
     // increase our level (to be used/displayed)
     this.levels -= 1;
     Random ran = new Random();
+    // Choose a random levelchange to apply.
     LevelChange rng = LevelChange.values()[ran.nextInt(LevelChange.values().length)];
-    // System.out.println(rng);
     switch (rng) 
     {
+      // Will move the green bar for the next level.
       case MOVE_BAR:
         int nxt = ran.nextInt(395) + 150;
         this.greenX = nxt;
         this.gameBar = new GameBar(this.rf, this.barX, this.barY, 
             this.greenX, this.greenY, this.greenWidth, this.cursorOnBar);  
-        this.treelife.setNewMinBound(this.greenX-15);
-        this.treelife.setNewMaxBound(this.greenX + this.greenWidth + 10);
-        this.lives.newBounds(this.greenX-15, this.greenX + this.greenWidth + 10);
+        // Set the hit bounds for the observers to change.
+        setValidBounds();
         break;
+      // Changes the keytimes (speed) of our cursor.
       case SPEED_CHANGE:
         int keyTime1, keyTime2, keyTime3;
         int change = ran.nextInt(750);
@@ -269,6 +279,8 @@ public class GameScreen extends MainScreenStage implements KeyListener
         this.cursorOnBar = new CursorOnBar(150, this.height - 70, keyTime1, keyTime2, keyTime3);
         this.setRestartTime(keyTime3);
         break;
+      // Changes the width of the green area
+      // Caps the area at 25 width because the game becomes essentially not possible.
       case GREEN_BAR_SIZE:
         int width = ran.nextInt(60);
         if (this.greenWidth - width < 25)
@@ -281,10 +293,9 @@ public class GameScreen extends MainScreenStage implements KeyListener
         }
         this.gameBar = new GameBar(this.rf, this.barX, this.barY, 
             this.greenX, this.greenY, this.greenWidth, this.cursorOnBar); 
-        this.treelife.setNewMinBound(this.greenX-15);
-        this.treelife.setNewMaxBound(this.greenX + this.greenWidth + 10);
-        this.lives.newBounds(this.greenX-15, this.greenX + this.greenWidth + 10);
+        setValidBounds();
         break;
+      // Decreases the player's total lives/tries to hit the area.
       case LESS_LIVES:
         // If we roll Less_Lives when we already only have 1 life available, 
         // we want to call the method again to roll again.
@@ -300,6 +311,16 @@ public class GameScreen extends MainScreenStage implements KeyListener
       default:
         break;
     }
+  }
+  
+  /**
+   * When we need to update the correct lives/tree bounds we need to call this method.
+   */
+  private void setValidBounds()
+  {
+    this.treelife.setNewMinBound(this.greenX-15);
+    this.treelife.setNewMaxBound(this.greenX + this.greenWidth + 10);
+    this.lives.newBounds(this.greenX-15, this.greenX + this.greenWidth + 10);
   }
   
   /**

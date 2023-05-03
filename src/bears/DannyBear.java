@@ -12,9 +12,9 @@ import utils.ScaledImage;
 import visual.statik.sampled.Content;
 
 /**
- * Original image frames.
+ * Original br eaimage frames.
  * 
- * @author joselynetran
+ * @author joselynetran and panamuhamad
  *
  */
 public class DannyBear implements Frames
@@ -27,6 +27,8 @@ public class DannyBear implements Frames
 
   private int screenHeight;
   private ResourceFinder rf;
+
+  // filename of the images
   private String[] imageNames;
 
   // will map bear frame to name --> <"name", bearimage>
@@ -52,7 +54,12 @@ public class DannyBear implements Frames
     setLocation();
   }
 
-  protected void readImageNames(final String filename)
+/**
+ * Helper method to help with reading images from file.
+ *
+ * @param filename
+ */
+  private void readImageNames(final String filename)
   {
 
     InputStream is = rf.findInputStream(filename);
@@ -110,6 +117,7 @@ public class DannyBear implements Frames
 
   /**
    * Returns Content to use one instance of content in the map.
+   *
    * @param key
    * @return Hashmap of the frames
    */

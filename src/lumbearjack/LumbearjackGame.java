@@ -62,11 +62,11 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
   private JButton customizeButton;
   private JButton prevCustomizeButton;
   private JButton nextCustomizeButton;
+
   // Misc setup
   private Font font;
-  private boolean playedBefore;
-
   private ResourceFinder rf;
+  private boolean playedBefore;
 
   /**
    * Main Class constructor.
@@ -79,6 +79,8 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
   public LumbearjackGame(final int width, final int height) throws FontFormatException, IOException
   {
     super(width, height);
+
+    // resourcefinder for all screens to
     this.rf = ResourceFinder.createInstance(new Marker());
 
     // import font from resources
@@ -100,10 +102,13 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
    */
   public void init()
   {
+
+    // setting up buttons with specific (x, y) location
     int buttonX = this.width / 4 + 70;
     int buttonY = this.height / 2 + 130;
     this.setUpButtons(buttonX, buttonY);
 
+    // setting screen and starting buttons
     JPanel screens = (JPanel) this.getContentPane();
     screens.setLayout(null);
     screens.add(startButton);
@@ -139,40 +144,46 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
     // with the screens views/JSwing elements
     switch (ac)
     {
+      // moving into the lore screen
       case (START):
         wipeContentPane(cp);
         cp.add(continueButton);
         cp.add(customizeButton);
         cp.add(this.loreScreen.getView());
         break;
+
+      // moving into customzation
       case (CUSTOMIZE):
         wipeContentPane(cp);
-        cp.add(continueButton);
+        // continue button moved to the center
         continueButton.setBounds(this.width / 3, this.height - 100, 250, 55);
+        cp.add(continueButton);
         cp.add(nextCustomizeButton);
         cp.add(prevCustomizeButton);
         cp.add(this.customizeScreen.getView());
         break;
+
+      // buttons for scrubbing between hats
       case (NEXT_CUSTOMIZE):
         this.customizeScreen.nextDannyIcon();
-        // System.out.println(this.customizeScreen.index);
         this.gameScreen.setBear(this.customizeScreen.getBear());
         break;
       case (PREV_CUSTOMIZE):
         this.customizeScreen.prevDannyIcon();
         this.gameScreen.setBear(this.customizeScreen.getBear());
         break;
+
+      // exit out of everything
       case (EXIT):
         this.windowClosed(null);
         break;
 
-      // replay will send user back to GameScreen
+      // chop/next/replay will send user back to GameScreen
       case (CHOP):
       case (NEXT):
       case (REPLAY):
         wipeContentPane(cp);
-        this.customizeScreen.getBear().getBearContent(DannyBear.SWING)
-          .setLocation(40, height / 9);
+        this.customizeScreen.getBear().getBearContent(DannyBear.SWING).setLocation(40, height / 9);
         if (!playedBefore)
         {
           this.helpPopup.setVisible(true);
@@ -183,6 +194,7 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
         this.gameScreen.addKeyListener(this);
         break;
 
+      // reopen help animation
       case (HELP):
         helpPopup.setVisible(true);
         break;
@@ -202,6 +214,7 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
    */
   private void setUpButtons(final int buttonX, final int buttonY)
   {
+    // intializing all JButtons
     this.startButton = new JButton(START);
     this.replayButton = new JButton(REPLAY);
     this.exitButton = new JButton(EXIT);
@@ -212,6 +225,7 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
     this.nextCustomizeButton = new JButton(NEXT_CUSTOMIZE);
     this.prevCustomizeButton = new JButton(PREV_CUSTOMIZE);
 
+    // setting font and actionlisteners for all buttons
     this.buttonSetter(startButton);
     this.buttonSetter(replayButton);
     this.buttonSetter(exitButton);
@@ -222,6 +236,7 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
     this.buttonSetter(nextCustomizeButton);
     this.buttonSetter(prevCustomizeButton);
 
+    // setting size and location for all buttons
     startButton.setBounds(buttonX, buttonY, 250, 55);
     replayButton.setBounds(buttonX, buttonY, 250, 55);
     nextLevelButton.setBounds(buttonX, buttonY, 250, 55);
@@ -234,6 +249,7 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
   }
 
   /**
+   * Helper method to set font and actionlistener for all buttons.
    * 
    * @param button
    */
@@ -244,6 +260,7 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
   }
 
   /**
+   * Helper method to wipescreen for prepping to place next screen.
    * 
    * @param cp
    */
@@ -266,7 +283,7 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
   @Override
   public void keyTyped(final KeyEvent e)
   {
-    // TODO Auto-generated method stub
+
   }
 
   @Override
@@ -276,6 +293,7 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
 
     // keycode -> keys mapped to specific numbers
     int key = e.getKeyCode();
+    // When the player presses space, and the game is over.
     if (key == GameScreen.SPACEKEY && this.gameScreen.gameFinished())
     {
       wipeContentPane(screen);
@@ -284,6 +302,7 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
       screen.add(this.transitionScreen.getView());
       this.gameScreen.reset();
     }
+    // When the player presses space, and the level is complete.
     else if (key == GameScreen.SPACEKEY && this.gameScreen.levelComplete())
     {
       wipeContentPane(screen);
@@ -293,6 +312,7 @@ public class LumbearjackGame extends JApplication implements ActionListener, Key
       screen.add(this.transitionScreen.getView());
       this.gameScreen.reset();
     }
+    // When the player presses space and has no tries remaining.
     else if (key == GameScreen.SPACEKEY && this.gameScreen.noLives())
     {
       wipeContentPane(screen);

@@ -7,7 +7,7 @@ import visual.VisualizationView;
 import visual.statik.sampled.Content;
 
 /**
- * 
+ * The parent class used to display the blurry background on each screen.
  * @author joselynetran
  *
  */
@@ -18,7 +18,7 @@ public class MainScreen extends Visualization
   protected ResourceFinder rf;
 
   /**
-   * 
+   * Constructor for our main screen.
    * @param width
    * @param height
    * @param rf
@@ -33,7 +33,7 @@ public class MainScreen extends Visualization
   }
 
   /**
-   * 
+   * Sets the blurred background for the screen.
    */
   public void init()
   {

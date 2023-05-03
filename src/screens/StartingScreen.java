@@ -17,7 +17,7 @@ public class StartingScreen extends MainScreen
 {
 
   /**
-   * 
+   * Class to display our initial start screen.
    * @param width
    * @param height
    * @param rf
@@ -29,7 +29,7 @@ public class StartingScreen extends MainScreen
   }
 
   /**
-   * 
+   * Adds the danny logo to our start screen (located in resources folder).
    */
   public void addDanny()
   {

@@ -44,7 +44,6 @@ public class PlayerTries extends AggregateContent implements GameObserver
   @Override
   public void reset()
   {
-    // TODO Auto-generated method stub
     this.tries = TOTAL_TRIES;
     for (int i = 0; i < this.tries; i++)
     {
@@ -74,14 +73,10 @@ public class PlayerTries extends AggregateContent implements GameObserver
    */
   public void setLives (final int lives)
   {
-    if (lives > 3)
-    {
-      TOTAL_TRIES = 3;
-    }
-    else
-    {
-      TOTAL_TRIES = lives;
-    }
+    if (lives > 3) TOTAL_TRIES = 3;
+    else TOTAL_TRIES = lives;
+
+    // based on how many tries left, take out unneeded lives content
     this.tries = TOTAL_TRIES;
     for (int i = 0; i < 3; i++)
     {

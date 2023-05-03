@@ -16,9 +16,9 @@ import visual.statik.SimpleContent;
 public class GameBar implements SimpleContent
 {
 
-  private RoundRectangle2D bar;
-  private RoundRectangle2D greenZone;
-  private int recX, recY;
+  private RoundRectangle2D bar;          // bar that will have cursor scribe though
+  private RoundRectangle2D greenZone;    // greenzone for user to hit cursor in
+  private int recX, recY;                // x and y coordinate
 
   /**
    * Default Constructor for our GameBar.
@@ -47,6 +47,7 @@ public class GameBar implements SimpleContent
   {
     Graphics2D g;
 
+    // background bar for cleaner display
     RoundRectangle2D backgroundBar = new RoundRectangle2D.Double(this.recX, this.recY, 500, 35, 15,
         15);
 

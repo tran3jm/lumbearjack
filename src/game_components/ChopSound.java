@@ -13,7 +13,7 @@ import io.ResourceFinder;
 /**
  * Sound class for everytime danny chops.
  * 
- * @author joselynetran
+ * @author joselynetran dan panamuhamad
  *
  */
 public class ChopSound implements GameObserver
@@ -51,13 +51,11 @@ public class ChopSound implements GameObserver
   public void reset()
   {
     //Does nothing
-    
   }
 
   @Override
   public void handleHit(final double hit)
   {
-    // TODO Auto-generated method stub
     this.chop.handleTick(0);
   }
 

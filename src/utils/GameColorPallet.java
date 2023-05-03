@@ -3,7 +3,7 @@ package utils;
 import java.awt.Color;
 
 /**
- * Enum for game color pallet.
+ * ENUMs for game color pallet.
  * 
  * @author joselynetran
  *

@@ -18,7 +18,7 @@ public class MainScreenStage extends Stage
   protected ResourceFinder rf;
 
   /**
-   * 
+   * Parent Class but using a stage to allow cursor movement.
    * @param width
    * @param height
    * @param metronome
